@@ -1,6 +1,8 @@
 import StandardInput from "./StandardInput";
 import SearchToken from "./SearchToken";
+import TokenBalance from "./TokenBalance";
 import { useState, useEffect } from "react";
+import { useGlobalState } from "@/utils/StateContext";
 
 type TokenData = {
   address: string;
@@ -13,8 +15,9 @@ type TokenData = {
 
 const TokenInput = () => {
   const [search, setSearch] = useState<boolean>(false);
-  const [token, setToken] = useState<TokenData | null>(null);
   const [tokenAmount, setTokenAmount] = useState<string>("");
+  const { selectedToken } = useGlobalState();
+
   useEffect(() => {
     if (search) {
       console.log("SearchToken");
@@ -35,10 +38,10 @@ const TokenInput = () => {
           className="bg-[#8612F1] rounded-lg p-2 text-center cursor-pointer"
           onClick={() => setSearch(true)}
         >
-          TokenA
+          {selectedToken?.symbol ?? "Select Token"}
         </p>
         {/* If too many balance is available, show upto three digit or smthn */}
-        <p className="text-[#8612F1] text-end p-2">Balance: 0</p>
+        <TokenBalance tokenAddress={selectedToken?.address ?? ""} />
       </div>
     </div>
   );

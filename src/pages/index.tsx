@@ -1,18 +1,22 @@
 import Web3Provider from "@/components/Web3Provider";
 import NavBar from "@/components/NavBar";
-import { store } from "@/store";
-import { Provider } from "react-redux";
+import { GlobalStateProvider } from "@/utils/StateContext";
 import Dashboard from "@/components/Dashboard";
+import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   return (
-    <Provider store={store}>
-      <Web3Provider>
-        <main className="w-full flex flex-col items-center mainBg h-full">
+    <Web3Provider>
+      <GlobalStateProvider>
+        <main className="w-full flex flex-col items-center mainBg h-screen">
           <NavBar />
-          <Dashboard />
+          {isMounted && <Dashboard />}
         </main>
-      </Web3Provider>
-    </Provider>
+      </GlobalStateProvider>
+    </Web3Provider>
   );
 }

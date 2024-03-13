@@ -1,21 +1,8 @@
-import { useSelector, useDispatch } from "react-redux";
-import { setTrnxHash } from "@/utils/updateState";
 import { useAccount } from "wagmi";
 import SendBox from "@/components/SendBox";
-interface TrnxState {
-  txHash: string;
-}
-
-interface RootState {
-  trnx: TrnxState;
-}
 
 const Dashboard = () => {
   const { isDisconnected, isConnected } = useAccount();
-  const trnx = useSelector((state: RootState) => state.trnx.txHash);
-
-  console.log(trnx);
-  const dispath = useDispatch();
   return (
     <div className="height-custom w-full flex justify-center">
       {isDisconnected ? (

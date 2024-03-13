@@ -1,6 +1,13 @@
 {
   "ethereumTokens": [
     {
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "address": "0x0",
+      "chainId": 1,
+      "decimals": 18
+    },
+    {
       "name": "Chainlink",
       "symbol": "LINK",
       "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
