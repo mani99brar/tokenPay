@@ -2,6 +2,7 @@ import StandardInput from "./StandardInput";
 import { useState } from "react";
 import { ConnectKitButton } from "connectkit";
 import TokenResults from "./TokenResults";
+
 interface SearchTokenProps {
   setSearch: (search: boolean) => void;
 }
@@ -51,7 +52,7 @@ const SearchToken = ({ setSearch }: SearchTokenProps) => {
               </ConnectKitButton.Custom>
             </div>
           </div>
-          <TokenResults />
+          <TokenResults searchQuery={searchQuery} />
         </div>
       </div>
       <div className="bg-[#000] h-full w-full opacity-60 top-0 absolute z-0"></div>

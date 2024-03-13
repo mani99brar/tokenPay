@@ -1,10 +1,14 @@
 interface StandardInputProps {
   placeholder: string;
   label: string;
-  setValue?: (value: string) => void;
+  setValue: (value: string) => void;
 }
 
-const StandardInput = ({ placeholder, label }: StandardInputProps) => {
+const StandardInput = ({
+  placeholder,
+  label,
+  setValue,
+}: StandardInputProps) => {
   return (
     <>
       {label != "" && <label htmlFor="token">{label}</label>}
@@ -13,6 +17,7 @@ const StandardInput = ({ placeholder, label }: StandardInputProps) => {
         type="text"
         placeholder={placeholder}
         id="token"
+        onChange={(e) => setValue(e.target.value)}
       />
     </>
   );
