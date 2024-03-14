@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { useGlobalState } from "@/utils/StateContext";
 import { ethers } from "ethers";
 import { parseTokenAmount } from "@/utils/helpers/allHelpers";
-import { useWriteContract } from "wagmi";
+import { useWriteContract, usePrepareTransactionRequest } from "wagmi";
 import abi from "@/utils/abi/ERC20.json";
+import TransactionStatus from "./TransactionStatus";
 const SendBox = () => {
   const { selectedToken } = useGlobalState();
   const { writeContract, data, status, error } = useWriteContract();
@@ -15,6 +16,7 @@ const SendBox = () => {
   const [sendMesasge, setSendMessage] = useState<string>("Enter Inputs");
   const [isRecieverValid, setIsRecieverValid] = useState<boolean>(false);
   const [isAmountValid, setIsAmountValid] = useState<boolean>(false);
+  const [trnx, setTrnx] = useState<boolean>(false);
   useEffect(() => {
     if (
       tokenAmount != "" &&
@@ -75,17 +77,14 @@ const SendBox = () => {
   };
 
   useEffect(() => {
-    console.log(data, status, error);
-    if (status === "success") {
-      setReceiverAddress("");
-      setTokenAmount("");
-    } else if (status === "error") {
-      setSendMessage("Failed to Send Tokens");
+    if (status != "idle") {
+      setTrnx(true);
     }
   }, [status]);
 
   return (
     <div className="w-full bg-white flex flex-col space-y-2 p-2">
+      {trnx && <TransactionStatus transactionHash={data} setTrnx={setTrnx} />}
       <div className="w-full bg-white rounded-lg p-4 flex justify-between border-4 border-[#8612F1]">
         <div className="w-3/6 flex flex-col text-[#8612F1] text-2xl">
           <StandardInput
