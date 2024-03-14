@@ -27,6 +27,7 @@ const SearchToken = ({ setSearch }: SearchTokenProps) => {
                 placeholder="Search Name or paste address"
                 label=""
                 setValue={setSearchQuery}
+                type="text"
               />
             </div>
             <div className="w-1/5 mr-4">

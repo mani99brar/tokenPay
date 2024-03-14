@@ -3,6 +3,7 @@ interface StandardInputProps {
   label: string;
   setValue: (value: string) => void;
   type: string;
+  value?: string;
 }
 
 const StandardInput = ({
@@ -10,6 +11,7 @@ const StandardInput = ({
   label,
   setValue,
   type,
+  value,
 }: StandardInputProps) => {
   return (
     <>
@@ -22,6 +24,7 @@ const StandardInput = ({
         className="placeholder-inherit outline-none font-bold"
         type={type}
         placeholder={placeholder}
+        value={value}
         id="token"
         onChange={(e) => setValue(e.target.value)}
       />

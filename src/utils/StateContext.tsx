@@ -24,7 +24,7 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 export const GlobalStateProvider: React.FC<any> = ({ children }) => {
   const [selectedToken, setSelectedToken] = useState<token>(
-    tokens.ethereumTokens[0]
+    tokens.allTokens[0]
   );
   const [lastTransaction, setLastTransaction] = useState("None");
   const [uiTheme, setUiTheme] = useState("light");

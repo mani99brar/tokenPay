@@ -16,16 +16,10 @@ type TokenData = {
 const TokenActions = () => {
   const [search, setSearch] = useState<boolean>(false);
   const { selectedToken } = useGlobalState();
-
-  useEffect(() => {
-    if (search) {
-      console.log("SearchToken");
-    }
-  }, [search]);
   return (
     <>
       {search && <SearchToken setSearch={setSearch} />}
-      <div className="w-2/5 flex flex-col items-end">
+      <div className="w-2/6 flex flex-col items-end">
         <p
           className="bg-[#8612F1] w-3/4 rounded-lg p-2 text-center cursor-pointer"
           onClick={() => setSearch(true)}

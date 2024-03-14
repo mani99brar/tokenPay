@@ -1,8 +1,5 @@
 import tokens from "@/utils/tokenData.json";
-import {
-  getTokenData,
-  getTokenBalance,
-} from "@/utils/getTokenData/readContract";
+import { getTokenData } from "@/utils/getTokenData/readContract";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
@@ -31,6 +28,9 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
   useEffect(() => {
     setLoad(true);
     fetchData?.refetch();
+    const filteredTokens = tokens.allTokens.filter(
+      (token) => token.chainId === chainId
+    );
     if (fetchData?.tokenData != null) {
       const tokenData = fetchData.tokenData;
       const effectiveChainId = chainId ?? 0;
@@ -44,15 +44,18 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
       setTokenList([searchedToken]);
       setLoad(true);
     } else if (searchQuery != "") {
-      console.log("No token found");
-      setTokenList([]);
+      const searchResults = filteredTokens.filter(
+        (token) =>
+          token.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setTokenList(searchResults);
       if (!ethers.isAddress(searchQuery)) setLoad(false);
     } else {
-      console.log("HERE");
-      setTokenList(tokens.ethereumTokens);
+      setTokenList(filteredTokens);
       setLoad(false);
     }
-  }, [searchQuery, fetchData?.tokenData?.name]);
+  }, [searchQuery, fetchData?.tokenData?.name, chainId]);
 
   useEffect(() => {
     if (fetchData?.isRefetching) {

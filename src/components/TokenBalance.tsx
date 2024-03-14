@@ -2,6 +2,7 @@ import { getTokenBalance } from "@/utils/getTokenData/readContract";
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
 import { useGlobalState } from "@/utils/StateContext";
+import { formatBalance } from "@/utils/helpers/allHelpers";
 interface TokenBalanceProps {
   tokenAddress: string;
 }
@@ -20,19 +21,26 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   const { selectedToken, setSelectedTokenBalance } = useGlobalState();
   const { balance, isFetching, refetch, isRefetching }: TokenBalanceReturn =
     getTokenBalance(tokenAddress as `0x${string}`, address);
+  //Formating balance to show upto 3 digits
+  let formattedBalance = "";
+  if (
+    tokenAddress == "0x0" &&
+    balance != undefined &&
+    typeof balance !== "bigint"
+  ) {
+    formattedBalance = parseFloat(balance?.formatted).toFixed(3);
+  } else
+    formattedBalance = formatBalance({
+      balance: selectedToken?.userBalance,
+      decimals: selectedToken?.decimals,
+    });
+  //Set the balance to the global state
   useEffect(() => {
-    console.log(balance, "Check Balance");
     if (typeof balance === "bigint" && balance != undefined) {
-      const numberBalance = Number(balance);
-      // Ensure the number is within the safe range for JavaScript numbers
-      if (!Number.isSafeInteger(numberBalance)) {
-        console.warn(
-          "Balance exceeds safe integer range. Precision may be lost."
-        );
-      }
-      setSelectedTokenBalance(numberBalance.toFixed(3));
-    } else if (balance != undefined && balance?.formatted != undefined) {
-      setSelectedTokenBalance(parseFloat(balance?.formatted).toFixed(3));
+      setSelectedTokenBalance(balance.toString());
+    } else if (balance?.formatted != undefined) {
+      console.log("In Token Balance", balance?.formatted);
+      setSelectedTokenBalance(balance?.value.toString());
     } else {
       setSelectedTokenBalance("");
       refetch;
@@ -43,7 +51,7 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
       {isFetching || isRefetching
         ? "Loading"
         : selectedToken?.userBalance != ""
-        ? "Balance: " + selectedToken?.userBalance
+        ? "Balance: " + formattedBalance
         : "Unknown"}
     </p>
   );
