@@ -3,6 +3,7 @@ import tokens from "./tokenData.json";
 interface GlobalContextType {
   selectedToken: token | null;
   setSelectedToken: (token: token) => void;
+  setSelectedTokenBalance: (balance: string) => void;
   lastTransaction: string;
   setLastTransaction: (transaction: string) => void;
   uiTheme: string;
@@ -16,6 +17,7 @@ interface token {
   image?: string;
   chainId: number;
   address: string;
+  userBalance?: string;
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -33,9 +35,17 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
   //   localStorage.setItem("selectedToken", JSON.stringify(token));
   // };
 
+  const setSelectedTokenBalance = (balance: string) => {
+    setSelectedToken((prevToken) => ({
+      ...prevToken,
+      userBalance: balance,
+    }));
+  };
+
   const value = {
     selectedToken,
     setSelectedToken,
+    setSelectedTokenBalance,
     lastTransaction,
     setLastTransaction,
     uiTheme,

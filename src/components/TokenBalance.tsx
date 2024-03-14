@@ -1,11 +1,10 @@
 import { getTokenBalance } from "@/utils/getTokenData/readContract";
 import { useAccount } from "wagmi";
-import { useEffect, useState } from "react";
-
+import { useEffect } from "react";
+import { useGlobalState } from "@/utils/StateContext";
 interface TokenBalanceProps {
   tokenAddress: string;
 }
-
 interface TokenBalanceReturn {
   balance:
     | { decimals: number; formatted: string; symbol: string; value: bigint }
@@ -18,7 +17,7 @@ interface TokenBalanceReturn {
 
 const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   const { address } = useAccount();
-  const [formattedBalance, setFormattedBalance] = useState<string>("");
+  const { selectedToken, setSelectedTokenBalance } = useGlobalState();
   const { balance, isFetching, refetch, isRefetching }: TokenBalanceReturn =
     getTokenBalance(tokenAddress as `0x${string}`, address);
   useEffect(() => {
@@ -31,19 +30,20 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
           "Balance exceeds safe integer range. Precision may be lost."
         );
       }
-      setFormattedBalance(numberBalance.toFixed(3));
-    } else if (balance?.formatted != undefined) {
-      setFormattedBalance(parseFloat(balance?.formatted).toFixed(3));
+      setSelectedTokenBalance(numberBalance.toFixed(3));
+    } else if (balance != undefined && balance?.formatted != undefined) {
+      setSelectedTokenBalance(parseFloat(balance?.formatted).toFixed(3));
     } else {
-      refetch();
+      setSelectedTokenBalance("");
+      refetch;
     }
-  }, [tokenAddress, isRefetching]);
+  }, [tokenAddress, balance]);
   return (
     <p className="text-[#8612F1] w-full text-end p-2">
-      {isFetching
+      {isFetching || isRefetching
         ? "Loading"
-        : formattedBalance != ""
-        ? "Balance: " + formattedBalance
+        : selectedToken?.userBalance != ""
+        ? "Balance: " + selectedToken?.userBalance
         : "Unknown"}
     </p>
   );
