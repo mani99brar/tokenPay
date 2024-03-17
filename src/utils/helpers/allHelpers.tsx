@@ -1,5 +1,3 @@
-import { parse } from "path";
-
 const ethers = require("ethers");
 interface Balance {
   balance: string | undefined;
@@ -55,4 +53,24 @@ function parseTokenAmount(
   }
 }
 
-export { parseTokenAmount, formatBalance };
+interface MethodCall {
+  receiverAddress: string;
+  amount: string;
+}
+
+function encodeMethodCall({ receiverAddress, amount }: MethodCall) {
+  if (amount === "") return "";
+  const iface = new ethers.Interface([
+    "function transfer(address to, uint256 value) external returns (bool)",
+  ]);
+  const data = iface.encodeFunctionData("transfer", [receiverAddress, amount]);
+  return data;
+}
+
+const trimAddress = (address: string) => {
+  const start = address.slice(0, 7); // Get the first 5 characters (including '0x')
+  const end = address.slice(-5); // Get the last 3 characters
+  return `${start}....${end}`; // Combine them with ellipses in the middle
+};
+
+export { parseTokenAmount, formatBalance, encodeMethodCall, trimAddress };

@@ -9,9 +9,9 @@ const Dashboard = () => {
         <div className="text-4xl mt-8">Connect Wallet</div>
       ) : (
         isConnected && (
-          <div className="mt-8 w-2/5 flex flex-col items-center space-y-4">
+          <div className="mt-8 w-4/6 flex flex-col items-center space-y-4">
             <p className="text-4xl font-bold">Send tokens to addresses</p>
-            <div className="w-full border-2 border-white rounded-lg">
+            <div className="w-full">
               <SendBox />
             </div>
           </div>
