@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import SingleTrnx from "./SingleTrnx";
 import PopUp from "./PopUp";
+import StandardButton from "./StandardButton";
 interface Transaction {
   hash: string;
   date: string;
@@ -15,6 +16,11 @@ interface HistoryTrnxProps {
 const HistoryTrnx = ({ setOpen }: HistoryTrnxProps) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const { chainId } = useAccount();
+
+  const deleteHistory = () => {
+    localStorage.removeItem("transactions");
+    setTransactions([]);
+  };
 
   useEffect(() => {
     const storedTransactions = localStorage.getItem("transactions");
@@ -30,18 +36,23 @@ const HistoryTrnx = ({ setOpen }: HistoryTrnxProps) => {
   return (
     <PopUp prompt="Transaction History" setValue={setOpen}>
       {transactions.length > 0 ? (
-        <ul className="space-y-4">
-          {transactions.map((trnx) => (
-            <li
-              className="p-4 border-4 border-[#8612F1] rounded-lg"
-              key={trnx.hash}
-            >
-              <SingleTrnx hash={trnx.hash} />
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="space-y-4 h-full overflow-scroll">
+            {transactions.map((trnx) => (
+              <li
+                className="p-4 border-4 mt-2 border-[#8612F1] rounded-lg"
+                key={trnx.hash}
+              >
+                <SingleTrnx hash={trnx.hash} />
+              </li>
+            ))}
+          </ul>
+          <StandardButton prompt="Delete History" handleClick={deleteHistory} />
+        </>
       ) : (
-        <p className="font-bold mt-2 text-lg">No transactions.</p>
+        <p className="font-bold border-4 mt-2 border-[#8612F1] rounded-lg p-4 text-lg">
+          No transactions.
+        </p>
       )}
     </PopUp>
   );

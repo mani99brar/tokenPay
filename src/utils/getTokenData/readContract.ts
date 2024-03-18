@@ -73,7 +73,6 @@ function getTokenBalance(
   contractAddress: `0x${string}`,
   userAddress: `0x${string}` | undefined
 ) {
-  console.log(contractAddress);
   if (contractAddress === "0x0") {
     const {
       data: balance,

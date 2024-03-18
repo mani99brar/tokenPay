@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useWaitForTransactionReceipt, useAccount } from "wagmi";
-import { formatBalance, trimAddress } from "@/utils/helpers/allHelpers";
-import { getTokenData } from "@/utils/getTokenData/readContract";
+import SingleTrnx from "./SingleTrnx";
 import PopUp from "./PopUp";
+import { updateTransactionStatus } from "@/utils/helpers/allHelpers";
 interface Transaction {
   transactionHash: `0x${string}` | undefined;
   setTrnx: (trnx: boolean) => void;
@@ -14,28 +14,32 @@ const TransactionStatus = ({
   setTrnx,
   trnxPrompt,
 }: Transaction) => {
+  console.log(transactionHash, "No sped up");
   const { chain, address } = useAccount();
   console.log(chain?.blockExplorers);
   const { data, isError, isLoading } = useWaitForTransactionReceipt({
     hash: transactionHash,
     onReplaced: (replacement) => {
       setSpedUp(true);
-      console.log(replacement);
+      console.log(replacement, "Sped up");
     },
   });
-  const token = getTokenData(data?.to as string, address);
-
+  const [activeHash, setActiveHash] = useState<string | undefined>(
+    transactionHash
+  );
   const [spedUp, setSpedUp] = useState<boolean>(false);
   const [statusMessage, setStatusMessage] = useState(
     "Waiting for transaction..."
   );
 
   useEffect(() => {
+    setActiveHash(transactionHash);
     if (isLoading) {
       setStatusMessage("Waiting for transaction to confirm...");
     } else if (isError) {
       setStatusMessage("Transaction failed.");
     } else if (data) {
+      updateTransactionStatus({ transactionHash, newStatus: "success" });
       setStatusMessage("Transaction succeeded!");
     }
   }, [transactionHash, data, isError, isLoading]);
@@ -51,43 +55,9 @@ const TransactionStatus = ({
           <div className="text-[#8612F1] border-4 h-full rounded-lg border-[#8612F1] p-4">
             <p className="text-2xl font-bold">{statusMessage}</p>
             <p className="lg">{spedUp && " Your Transaction was sped up"}</p>
-            {data != undefined && (
-              <div className="mt-2">
-                <a
-                  href={
-                    chain?.blockExplorers?.default.url +
-                    "/tx/" +
-                    data?.transactionHash
-                  }
-                  className="underline underline-offset-4"
-                >
-                  View on block explorer
-                </a>
-                <div className="mt-8 flex flex-col space-y-2">
-                  <p className="text-2xl mb-2 font-bold">Transaction Details</p>
-                  <p>
-                    Token:{" "}
-                    <span className="font-bold">
-                      {token?.tokenData?.symbol}
-                    </span>
-                  </p>
-                  <p>
-                    Amount:{" "}
-                    <span className="font-bold">
-                      {formatBalance({
-                        balance: BigInt(data.logs[0].data).toString(),
-                        decimals: token?.tokenData.decimals,
-                      })}
-                    </span>
-                  </p>
-
-                  <p>
-                    Receiver:{" "}
-                    <span className="font-bold">
-                      {trimAddress(`0x${data.logs[0].topics[2]?.slice(-40)}`)}
-                    </span>
-                  </p>
-                </div>
+            {activeHash != undefined && (
+              <div className="border-4 p-4 rounded-lg border-[#8612F1] mt-4">
+                <SingleTrnx hash={activeHash} />
               </div>
             )}
           </div>

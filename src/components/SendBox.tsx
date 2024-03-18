@@ -18,7 +18,8 @@ import TransactionStatus from "./TransactionStatus";
 import HistoryTrnx from "./HistoryTrnx";
 
 const SendBox = () => {
-  const { selectedToken } = useGlobalState();
+  const { selectedToken, lastTransaction, setLastTransaction } =
+    useGlobalState();
   const { writeContract, data, status, error } = useWriteContract();
   const [tokenAmount, setTokenAmount] = useState<string>("");
   const [receiverAddress, setReceiverAddress] = useState<string>("");
@@ -136,12 +137,19 @@ const SendBox = () => {
       const desError = { error }.error?.cause as BaseErrorType;
       console.log(desError.shortMessage);
       setTrnxPrompt("Transaction failed: " + desError.shortMessage);
+      setLastTransaction(null);
     } else if (status === "success") {
       const transactionDetails = {
         hash: data,
-        date: new Date().toISOString(),
+        isPending: true,
         chainId,
       };
+      //Make types same
+      setLastTransaction({
+        hash: data as string,
+        isPending: true,
+        chainId: chainId ?? 0,
+      });
       const existingTransactions = JSON.parse(
         localStorage.getItem("transactions") || "[]"
       );
@@ -153,15 +161,30 @@ const SendBox = () => {
       const channel = new BroadcastChannel("transaction_channel");
       channel.postMessage(transactionDetails);
       channel.close();
+      setLastTransaction(null);
       setTrnxPrompt("");
     }
   }, [status]);
 
   useEffect(() => {
+    const existingTransactions = JSON.parse(
+      localStorage.getItem("transactions") || "[]"
+    );
+    if (existingTransactions.length > 0) {
+      if (existingTransactions[0].isPending === true) {
+        setLastTransaction(existingTransactions[0]);
+        setIsTrnxActive(true);
+      }
+    }
     const channel = new BroadcastChannel("transaction_channel");
     channel.onmessage = (event) => {
       console.log("Received", event.data);
-      // trnx hash to trnx popup
+      if (event.data === undefined) return;
+      setLastTransaction({
+        hash: event.data.hash,
+        isPending: true,
+        chainId: chainId ?? 0,
+      });
       setIsTrnxActive(true);
     };
     return () => channel.close();
@@ -172,7 +195,7 @@ const SendBox = () => {
       <div className="w-3/4 bg-white rounded-lg flex flex-col space-y-2 p-2">
         {isTrnxActive && (
           <TransactionStatus
-            transactionHash={data}
+            transactionHash={lastTransaction?.hash as `0x${string}`}
             setTrnx={setIsTrnxActive}
             trnxPrompt={trnxPrompt}
           />

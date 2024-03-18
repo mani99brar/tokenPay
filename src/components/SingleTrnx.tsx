@@ -9,7 +9,6 @@ interface TrnxHash {
 const SingleTrnx = ({ hash }: TrnxHash) => {
   const [statusMessage, setStatusMessage] = useState("Loading...");
   const { chain, address } = useAccount();
-  console.log(chain?.blockExplorers);
   const { data, isError, isLoading } = useWaitForTransactionReceipt({
     hash: hash as `0x${string}`,
   });

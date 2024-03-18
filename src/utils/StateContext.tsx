@@ -4,8 +4,8 @@ interface GlobalContextType {
   selectedToken: token | null;
   setSelectedToken: (token: token) => void;
   setSelectedTokenBalance: (balance: string) => void;
-  lastTransaction: string;
-  setLastTransaction: (transaction: string) => void;
+  lastTransaction: Transaction | null;
+  setLastTransaction: (transaction: Transaction | null) => void;
   uiTheme: string;
   setUiTheme: (theme: string) => void;
 }
@@ -20,20 +20,22 @@ interface token {
   userBalance?: string;
 }
 
+interface Transaction {
+  hash: string;
+  isPending: boolean;
+  chainId: number;
+}
+
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 export const GlobalStateProvider: React.FC<any> = ({ children }) => {
   const [selectedToken, setSelectedToken] = useState<token>(
     tokens.allTokens[0]
   );
-  const [lastTransaction, setLastTransaction] = useState("None");
+  const [lastTransaction, setLastTransaction] = useState<Transaction | null>(
+    null
+  );
   const [uiTheme, setUiTheme] = useState("light");
-
-  // // Custom setter function that updates state and localStorage
-  // const setSelectedTokenState = (token: token | null) => {
-  //   setSelectedToken(token);
-  //   localStorage.setItem("selectedToken", JSON.stringify(token));
-  // };
 
   const setSelectedTokenBalance = (balance: string) => {
     setSelectedToken((prevToken) => ({

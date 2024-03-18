@@ -73,4 +73,46 @@ const trimAddress = (address: string) => {
   return `${start}....${end}`; // Combine them with ellipses in the middle
 };
 
-export { parseTokenAmount, formatBalance, encodeMethodCall, trimAddress };
+interface TransactionStatus {
+  transactionHash: `0x${string}` | undefined;
+  newStatus: string;
+}
+
+interface Transaction {
+  hash: string;
+  isPending: boolean;
+  chainId: number;
+}
+
+const updateTransactionStatus = ({
+  transactionHash,
+  newStatus,
+}: TransactionStatus) => {
+  // Retrieve the existing transactions from localStorage
+  const existingTransactions = JSON.parse(
+    localStorage.getItem("transactions") || "[]"
+  );
+
+  // Find the transaction to update
+  const transactionIndex = existingTransactions.findIndex(
+    (transaction: Transaction) => transaction.hash === transactionHash
+  );
+
+  if (transactionIndex !== -1) {
+    // Update the isPending status of the found transaction
+    existingTransactions[transactionIndex].isPending = newStatus;
+
+    // Persist the updated transactions array back to localStorage
+    localStorage.setItem("transactions", JSON.stringify(existingTransactions));
+  } else {
+    console.log("Transaction not found");
+  }
+};
+
+export {
+  parseTokenAmount,
+  formatBalance,
+  encodeMethodCall,
+  trimAddress,
+  updateTransactionStatus,
+};
