@@ -124,6 +124,49 @@ function getThemeColors(theme: string): [string, string, string] {
   return themeColors[theme] || defaultColors;
 }
 
+function getConnektTheme(theme: string) {
+  const themeDetails: {
+    [key: string]: {
+      cssVariables: { [key: string]: string };
+    };
+  } = {
+    "Purple Hollow": {
+      cssVariables: {
+        "--ck-overlay-background": "rgba(134, 18, 241, 0.5)",
+        "--ck-button-text-color": "#fff",
+        "--ck-button-background-color": "transparent",
+        "--ck-button-border-color": "#8612F1",
+      },
+    },
+    "White Hollow": {
+      cssVariables: {
+        "--ck-overlay-background": "rgba(255, 255, 255, 0.5)",
+        "--ck-button-text-color": "#8612F1",
+        "--ck-button-background-color": "transparent",
+        "--ck-button-border-color": "#fff",
+      },
+    },
+    "White Solid": {
+      cssVariables: {
+        "--ck-overlay-background": "rgba(255, 255, 255, 0.85)",
+        "--ck-button-text-color": "#000",
+        "--ck-button-background-color": "#fff",
+        "--ck-button-border-color": "#fff",
+      },
+    },
+    "Black Solid": {
+      cssVariables: {
+        "--ck-overlay-background": "rgba(0, 0, 0, 0.85)",
+        "--ck-button-text-color": "#fff",
+        "--ck-button-background-color": "#000",
+        "--ck-button-border-color": "#000",
+      },
+    },
+  };
+
+  return themeDetails[theme] ? themeDetails[theme] : null;
+}
+
 export {
   getThemeColors,
   parseTokenAmount,
@@ -131,4 +174,5 @@ export {
   encodeMethodCall,
   trimAddress,
   updateTransactionStatus,
+  getConnektTheme,
 };

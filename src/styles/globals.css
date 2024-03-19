@@ -4,7 +4,7 @@
 
 .purpleHollow{
     background: rgb(255,255,255);
-background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(42,8,112,1) 75%);
+background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(42,8,112,1) 40%);
 color: #fff;
 }
 
@@ -14,18 +14,18 @@ color: #fff;
 
 .whiteHollow{
 background: rgb(42,8,112);
-background: radial-gradient(circle, rgba(42,8,112,1) 0%, rgba(255,255,255,1) 75%);
+background: radial-gradient(circle, rgba(42,8,112,1) 0%, rgba(255,255,255,1) 40%);
 color: #8612F1;
 }
 
 .whiteSolid{
   background: rgb(255,255,255);
-background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(0,0,0,1) 75%);
+background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(0,0,0,1) 40%);
 color: white;
 }
 
 .blackSolid{
   background: rgb(0,0,0);
-background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 75%);
+background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 40%);
 color: black;
 }

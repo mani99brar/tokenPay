@@ -9,7 +9,7 @@ const PopUp: React.FC<PopUpProps> = ({ setValue, prompt, children }) => {
   const { uiTheme } = useGlobalState();
   const [textColor, bgColor] = getThemeColors(uiTheme);
   return (
-    <div className="h-screen w-screen absolute top-0 right-10">
+    <div className="h-screen w-screen absolute top-0 left-0">
       <div className="flex w-full h-full items-center justify-center absolute z-10">
         <div
           style={{

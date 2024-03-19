@@ -16,13 +16,14 @@ const StandardButton = ({
   const [textColor, bgColor] = getThemeColors(uiTheme);
   return (
     <button
+      style={{
+        backgroundColor: bgColor,
+        color: textColor,
+        borderColor: textColor,
+      }}
       className={`w-full border-[${textColor}] hover:bg-[${textColor}] hover:text-[${bgColor}] font-bold tracking-wide ${
-        size == "small" ? "p-2 border-2 border-[${textColor}]" : `p-4 border-4`
-      } rounded-lg ${
-        isDisabled
-          ? ` bg-[${bgColor}] cursor-not-allowed  text-[${textColor}]`
-          : `bg-[${textColor}] text-[${bgColor}] cursor-pointer `
-      }`}
+        size == "small" ? "p-1 border-2" : `p-4 border-4`
+      } rounded-lg`}
       onClick={handleClick}
       disabled={isDisabled}
     >
