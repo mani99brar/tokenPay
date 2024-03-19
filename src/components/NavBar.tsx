@@ -9,7 +9,7 @@ const NavBar = () => {
   const { setUiTheme } = useGlobalState();
   const [changeTheme, setChangeTheme] = useState(false);
   return (
-    <div className="flex  justify-center h-[100px] items-center w-full text-xl">
+    <div className="flex justify-center min-h-[100px] items-center w-full text-xl">
       <div className="w-[80%] flex justify-between">
         <p className="font-bold text-2xl">Token Pay</p>
         <div className="flex items-center space-x-16">
