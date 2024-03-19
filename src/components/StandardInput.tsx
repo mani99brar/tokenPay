@@ -1,3 +1,5 @@
+import { useGlobalState } from "@/utils/StateContext";
+import { getThemeColors } from "@/utils/helpers/allHelpers";
 interface StandardInputProps {
   placeholder: string;
   label: string;
@@ -13,6 +15,8 @@ const StandardInput = ({
   type,
   value,
 }: StandardInputProps) => {
+  const { uiTheme } = useGlobalState();
+  const [textColor, bgColor] = getThemeColors(uiTheme);
   return (
     <>
       {label != "" && (
@@ -21,7 +25,7 @@ const StandardInput = ({
         </label>
       )}
       <input
-        className="placeholder-inherit outline-none font-bold"
+        className={`placeholder-inherit outline-none font-bold bg-[${bgColor}]`}
         type={type}
         placeholder={placeholder}
         value={value}

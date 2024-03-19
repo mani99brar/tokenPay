@@ -11,9 +11,7 @@ const Dashboard = () => {
         isConnected && (
           <div className="mt-8 w-4/6 flex flex-col items-center space-y-4">
             <p className="text-4xl font-bold">Send tokens to addresses</p>
-            <div className="w-full">
-              <SendBox />
-            </div>
+            <SendBox />
           </div>
         )
       )}

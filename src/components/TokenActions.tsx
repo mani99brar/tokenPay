@@ -3,6 +3,7 @@ import SearchToken from "./SearchToken";
 import TokenBalance from "./TokenBalance";
 import { useState, useEffect } from "react";
 import { useGlobalState } from "@/utils/StateContext";
+import { getThemeColors } from "@/utils/helpers/allHelpers";
 
 type TokenData = {
   address: string;
@@ -15,13 +16,15 @@ type TokenData = {
 
 const TokenActions = () => {
   const [search, setSearch] = useState<boolean>(false);
-  const { selectedToken } = useGlobalState();
+  const { selectedToken, uiTheme } = useGlobalState();
+  const [textColor, bgColor] = getThemeColors(uiTheme);
   return (
     <>
       {search && <SearchToken setSearch={setSearch} />}
       <div className="w-2/6 flex flex-col items-end">
         <p
-          className="bg-[#8612F1] w-3/4 rounded-lg p-2 text-center cursor-pointer"
+          style={{ backgroundColor: textColor, color: bgColor }}
+          className={` w-3/4 rounded-lg p-2 text-center cursor-pointer`}
           onClick={() => setSearch(true)}
         >
           {selectedToken?.symbol ?? "Select Token"}

@@ -109,7 +109,23 @@ const updateTransactionStatus = ({
   }
 };
 
+function getThemeColors(theme: string): [string, string, string] {
+  const themeColors: { [key: string]: [string, string, string] } = {
+    "Purple Hollow": ["#8612F1", "#fff", "purpleHollow"],
+    "White Hollow": ["#fff", "#8612F1", "whiteHollow"],
+    // "Black Hollow": ["#000", "#8612F1"],
+    // "Purple Solid": ["#8612F1", "#000"],
+    "White Solid": ["#fff", "#000", "whiteSolid"],
+    "Black Solid": ["#000", "#fff", "blackSolid"],
+  };
+
+  const defaultColors: [string, string] = ["#000", "#FFF"];
+
+  return themeColors[theme] || defaultColors;
+}
+
 export {
+  getThemeColors,
   parseTokenAmount,
   formatBalance,
   encodeMethodCall,

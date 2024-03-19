@@ -3,6 +3,7 @@ import { useWaitForTransactionReceipt, useAccount } from "wagmi";
 import SingleTrnx from "./SingleTrnx";
 import PopUp from "./PopUp";
 import { updateTransactionStatus } from "@/utils/helpers/allHelpers";
+import ThemeWrapper from "./ThemeWrapper";
 interface Transaction {
   transactionHash: `0x${string}` | undefined;
   setTrnx: (trnx: boolean) => void;
@@ -48,19 +49,21 @@ const TransactionStatus = ({
     <PopUp prompt="Transaction Status" setValue={setTrnx}>
       <div className="w-full h-full flex flex-col p-4">
         {trnxPrompt != "" ? (
-          <p className="text-[#8612F1] h-full rounded-lg border-4 p-4 border-[#8612F1] text-2xl font-bold">
-            {trnxPrompt}
-          </p>
+          <ThemeWrapper>
+            <p className="h-full rounded-lg text-2xl font-bold">{trnxPrompt}</p>
+          </ThemeWrapper>
         ) : (
-          <div className="text-[#8612F1] border-4 h-full rounded-lg border-[#8612F1] p-4">
-            <p className="text-2xl font-bold">{statusMessage}</p>
-            <p className="lg">{spedUp && " Your Transaction was sped up"}</p>
-            {activeHash != undefined && (
-              <div className="border-4 p-4 rounded-lg border-[#8612F1] mt-4">
-                <SingleTrnx hash={activeHash} />
-              </div>
-            )}
-          </div>
+          <ThemeWrapper>
+            <div className="flex flex-col mb-4 space-y-4">
+              <p className="text-2xl font-bold">{statusMessage}</p>
+              <p className="lg">{spedUp && " Your Transaction was sped up"}</p>
+              {activeHash != undefined && (
+                <ThemeWrapper>
+                  <SingleTrnx hash={activeHash} />
+                </ThemeWrapper>
+              )}
+            </div>
+          </ThemeWrapper>
         )}
       </div>
     </PopUp>

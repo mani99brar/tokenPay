@@ -3,6 +3,7 @@ import { useAccount } from "wagmi";
 import SingleTrnx from "./SingleTrnx";
 import PopUp from "./PopUp";
 import StandardButton from "./StandardButton";
+import ThemeWrapper from "./ThemeWrapper";
 interface Transaction {
   hash: string;
   date: string;
@@ -39,20 +40,17 @@ const HistoryTrnx = ({ setOpen }: HistoryTrnxProps) => {
         <>
           <ul className="space-y-4 h-full overflow-scroll">
             {transactions.map((trnx) => (
-              <li
-                className="p-4 border-4 mt-2 border-[#8612F1] rounded-lg"
-                key={trnx.hash}
-              >
-                <SingleTrnx hash={trnx.hash} />
-              </li>
+              <ThemeWrapper key={trnx.hash}>
+                <li className="mt-2">
+                  <SingleTrnx hash={trnx.hash} />
+                </li>
+              </ThemeWrapper>
             ))}
           </ul>
           <StandardButton prompt="Delete History" handleClick={deleteHistory} />
         </>
       ) : (
-        <p className="font-bold border-4 mt-2 border-[#8612F1] rounded-lg p-4 text-lg">
-          No transactions.
-        </p>
+        <ThemeWrapper>No transactions.</ThemeWrapper>
       )}
     </PopUp>
   );

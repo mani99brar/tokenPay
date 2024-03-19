@@ -47,7 +47,7 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
     }
   }, [tokenAddress, balance]);
   return (
-    <p className="text-[#8612F1] w-full text-end p-2">
+    <p className="w-full text-end p-2">
       {isFetching || isRefetching
         ? "Loading"
         : selectedToken?.userBalance != ""

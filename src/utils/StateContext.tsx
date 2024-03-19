@@ -35,7 +35,7 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
   const [lastTransaction, setLastTransaction] = useState<Transaction | null>(
     null
   );
-  const [uiTheme, setUiTheme] = useState("light");
+  const [uiTheme, setUiTheme] = useState("Purple Hollow");
 
   const setSelectedTokenBalance = (balance: string) => {
     setSelectedToken((prevToken) => ({

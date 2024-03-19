@@ -23,7 +23,7 @@ const SingleTrnx = ({ hash }: TrnxHash) => {
     }
   }, [data, isError, isLoading]);
   return (
-    <>
+    <div className="mt-4">
       {data != undefined ? (
         <div className="flex flex-col space-y-2">
           <p>
@@ -59,7 +59,7 @@ const SingleTrnx = ({ hash }: TrnxHash) => {
       ) : (
         <p>{statusMessage}</p>
       )}
-    </>
+    </div>
   );
 };
 

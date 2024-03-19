@@ -2,12 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-.mainBg{
-    background: rgb(136,18,244);
-background: radial-gradient(circle, rgba(136,18,244,1) 0%, rgba(30,7,95,1) 100%);
-color: white;
+.purpleHollow{
+    background: rgb(255,255,255);
+background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(42,8,112,1) 75%);
+color: #fff;
 }
 
 .height-custom {
   height: calc(100vh - 100px);
+}
+
+.whiteHollow{
+background: rgb(42,8,112);
+background: radial-gradient(circle, rgba(42,8,112,1) 0%, rgba(255,255,255,1) 75%);
+color: #8612F1;
+}
+
+.whiteSolid{
+  background: rgb(255,255,255);
+background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(0,0,0,1) 75%);
+color: white;
+}
+
+.blackSolid{
+  background: rgb(0,0,0);
+background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 75%);
+color: black;
 }

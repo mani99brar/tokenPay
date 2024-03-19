@@ -4,7 +4,11 @@ import StandardInput from "./StandardInput";
 import { useEffect, useState } from "react";
 import { useGlobalState } from "@/utils/StateContext";
 import { ethers } from "ethers";
-import { parseTokenAmount, encodeMethodCall } from "@/utils/helpers/allHelpers";
+import {
+  parseTokenAmount,
+  encodeMethodCall,
+  getThemeColors,
+} from "@/utils/helpers/allHelpers";
 import {
   useWriteContract,
   BaseErrorType,
@@ -16,10 +20,13 @@ import {
 import abi from "@/utils/abi/ERC20.json";
 import TransactionStatus from "./TransactionStatus";
 import HistoryTrnx from "./HistoryTrnx";
+import ThemeWrapper from "./ThemeWrapper";
 
 const SendBox = () => {
-  const { selectedToken, lastTransaction, setLastTransaction } =
+  const { selectedToken, lastTransaction, setLastTransaction, uiTheme } =
     useGlobalState();
+  const [textColor, bgColor] = getThemeColors(uiTheme);
+
   const { writeContract, data, status, error } = useWriteContract();
   const [tokenAmount, setTokenAmount] = useState<string>("");
   const [receiverAddress, setReceiverAddress] = useState<string>("");
@@ -191,8 +198,11 @@ const SendBox = () => {
   }, []);
 
   return (
-    <div className="flex space-x-2">
-      <div className="w-3/4 bg-white rounded-lg flex flex-col space-y-2 p-2">
+    <div className="flex w-full space-x-2">
+      <div
+        style={{ backgroundColor: bgColor }}
+        className={`w-3/4 bg-[${bgColor}] rounded-lg flex flex-col space-y-2 p-2`}
+      >
         {isTrnxActive && (
           <TransactionStatus
             transactionHash={lastTransaction?.hash as `0x${string}`}
@@ -200,27 +210,31 @@ const SendBox = () => {
             trnxPrompt={trnxPrompt}
           />
         )}
-        <div className="w-full bg-white rounded-lg p-4 flex justify-between border-4 border-[#8612F1]">
-          <div className="w-3/6 flex flex-col text-[#8612F1] text-2xl">
+        <ThemeWrapper>
+          <>
+            <div className="w-3/6 flex flex-col text-2xl">
+              <StandardInput
+                placeholder="0"
+                label="Token Amount"
+                value={tokenAmount}
+                setValue={setTokenAmount}
+                type="number"
+              />
+            </div>
+            <TokenActions />
+          </>
+        </ThemeWrapper>
+        <ThemeWrapper>
+          <div className=" flex flex-col text-2xl">
             <StandardInput
-              placeholder="0"
-              label="Token Amount"
-              value={tokenAmount}
-              setValue={setTokenAmount}
-              type="number"
+              placeholder="0x0"
+              label="Receiver Address"
+              value={receiverAddress}
+              setValue={setReceiverAddress}
+              type="text"
             />
           </div>
-          <TokenActions />
-        </div>
-        <div className="w-full p-4 border-4 text-xl pb-8 border-[#8612F1] rounded-lg flex flex-col text-[#8612F1]">
-          <StandardInput
-            placeholder="0x0"
-            label="Receiver Address"
-            value={receiverAddress}
-            setValue={setReceiverAddress}
-            type="text"
-          />
-        </div>
+        </ThemeWrapper>
         <StandardButton
           isDisabled={!isAmountValid || !isRecieverValid}
           handleClick={sendTokens}
@@ -228,24 +242,27 @@ const SendBox = () => {
         />
       </div>
       {gasPrice != undefined && (
-        <div className="w-1/4 p-2 bg-white rounded-lg flex flex-col justify-between text-[#8612F1] ">
-          <div className="w-full h-full bg-white rounded-lg p-4 border-4 border-[#8612F1]">
-            <p>Network Stats:</p>
-            <div className="flex justify-between flex-col items-start mt-2 ">
-              <p className="text-lg font-bold">
-                Gas Price: {gasPrice.toString()} wei
-              </p>
-              <p className="text-justify mt-4">
-                Gas prices are high transaction may take longer than avg.
-              </p>
+        <div
+          style={{ backgroundColor: bgColor }}
+          className={`w-1/4  rounded-lg flex flex-col justify-between p-2`}
+        >
+          <ThemeWrapper>
+            <div className="flex flex-col">
+              <p>Network Stats:</p>
+              <div className="flex justify-between flex-col items-start mt-2 ">
+                <p className="text-lg font-bold">
+                  Gas Price: {gasPrice.toString()} wei
+                </p>
+                <p className="text-justify mt-4">
+                  Gas prices are high transaction may take longer than avg.
+                </p>
+              </div>
             </div>
-          </div>
-          <button
-            onClick={() => setShowHistory(true)}
-            className="p-4 rounded-lg w-auto mt-4 text-white bg-[#8612F1] font-bold"
-          >
-            Previous Transactions
-          </button>
+          </ThemeWrapper>
+          <StandardButton
+            prompt="Previous Transactions"
+            handleClick={() => setShowHistory(true)}
+          />
           {showHistory && <HistoryTrnx setOpen={setShowHistory} />}
         </div>
       )}
