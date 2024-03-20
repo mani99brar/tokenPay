@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import tokens from "./tokenData.json";
+import { readTheme, storeOrUpdateTheme } from "./localStorage/readAndWrite";
 interface GlobalContextType {
   selectedToken: token | null;
   setSelectedToken: (token: token) => void;
@@ -7,7 +8,7 @@ interface GlobalContextType {
   lastTransaction: Transaction | null;
   setLastTransaction: (transaction: Transaction | null) => void;
   uiTheme: string;
-  setUiTheme: (theme: string) => void;
+  setAllUiTheme: (theme: string) => void;
 }
 
 interface token {
@@ -35,13 +36,24 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
   const [lastTransaction, setLastTransaction] = useState<Transaction | null>(
     null
   );
-  const [uiTheme, setUiTheme] = useState("Purple Hollow");
+
+  const [uiTheme, setUiTheme] = useState<string>("");
+
+  useEffect(() => {
+    const theme = readTheme();
+    setUiTheme(theme);
+  }, []);
 
   const setSelectedTokenBalance = (balance: string) => {
     setSelectedToken((prevToken) => ({
       ...prevToken,
       userBalance: balance,
     }));
+  };
+
+  const setAllUiTheme = (theme: string) => {
+    storeOrUpdateTheme(theme);
+    setUiTheme(theme);
   };
 
   const value = {
@@ -51,7 +63,7 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
     lastTransaction,
     setLastTransaction,
     uiTheme,
-    setUiTheme,
+    setAllUiTheme,
   };
 
   return (

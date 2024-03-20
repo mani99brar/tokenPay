@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useGlobalState } from "@/utils/StateContext";
 
 const NavBar = () => {
-  const { uiTheme, setUiTheme } = useGlobalState();
+  const { uiTheme, setAllUiTheme } = useGlobalState();
   const [changeTheme, setChangeTheme] = useState(false);
 
   return (
@@ -28,25 +28,25 @@ const NavBar = () => {
               <div className="w-full h-full bg-white rounded-lg flex flex-col p-4 space-y-4">
                 <button
                   className="bg-[#8612F1] rounded-lg p-4 font-bold text-2xl text-white"
-                  onClick={() => setUiTheme("Purple Hollow")}
+                  onClick={() => setAllUiTheme("Purple Hollow")}
                 >
                   {uiTheme === "Purple Hollow" ? "Selected" : "Purple Hollow"}
                 </button>
                 <button
                   className="bg-white text-[#8612F1] text-2xl font-bold border-4 border-[#8612F1] p-4 rounded-lg"
-                  onClick={() => setUiTheme("White Hollow")}
+                  onClick={() => setAllUiTheme("White Hollow")}
                 >
                   {uiTheme === "White Hollow" ? "Selected" : "White Hollow"}
                 </button>
                 <button
                   className="bg-black text-white text-2xl font-bold border-4 border-white p-4 rounded-lg"
-                  onClick={() => setUiTheme("White Solid")}
+                  onClick={() => setAllUiTheme("White Solid")}
                 >
                   {uiTheme === "White Solid" ? "Selected" : "White Solid"}
                 </button>
                 <button
                   className="bg-white text-black text-2xl font-bold border-4 border-black p-4 rounded-lg"
-                  onClick={() => setUiTheme("Black Solid")}
+                  onClick={() => setAllUiTheme("Black Solid")}
                 >
                   {uiTheme === "Black Solid" ? "Selected" : "Black Solid"}
                 </button>

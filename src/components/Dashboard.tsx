@@ -6,7 +6,9 @@ const Dashboard = () => {
   return (
     <div className="height-custom w-full flex justify-center">
       {isDisconnected ? (
-        <div className="text-4xl mt-8">Connect Wallet</div>
+        <div className="text-6xl w-1/2 text-center mt-8 font-bold">
+          Connect Wallet and start sending tokens.
+        </div>
       ) : (
         isConnected && (
           <div className="mt-8 w-4/6 flex flex-col items-center space-y-4">

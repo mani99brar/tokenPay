@@ -2,7 +2,7 @@ import { WagmiProvider, createConfig, http } from "wagmi";
 import { sepolia, mainnet } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
-import theme from "@/utils/theme.json";
+
 
 const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_ID;
 const sepoliaRpc = process.env.NEXT_PUBLIC_SEPOLIA_RPC;
@@ -28,13 +28,12 @@ const queryClient = new QueryClient();
 interface Web3ProviderProps {
   children: React.ReactNode;
 }
+
 const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <ConnectKitProvider theme="soft" customTheme={theme}>
-          {children}
-        </ConnectKitProvider>
+        <ConnectKitProvider theme="retro">{children}</ConnectKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

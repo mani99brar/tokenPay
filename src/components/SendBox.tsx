@@ -21,7 +21,10 @@ import abi from "@/utils/abi/ERC20.json";
 import TransactionStatus from "./TransactionStatus";
 import HistoryTrnx from "./HistoryTrnx";
 import ThemeWrapper from "./ThemeWrapper";
-
+import {
+  readTrnxHistory,
+  storeTransaction,
+} from "@/utils/localStorage/readAndWrite";
 const SendBox = () => {
   const { selectedToken, lastTransaction, setLastTransaction, uiTheme } =
     useGlobalState();
@@ -54,7 +57,6 @@ const SendBox = () => {
       selectedToken?.userBalance != undefined &&
       parseFloat(tokenAmount) > 0
     ) {
-      console.log("In Send Box", tokenAmount, selectedToken?.userBalance);
       if (
         parseFloat(parseTokenAmount(tokenAmount, selectedToken?.decimals)) <=
         parseFloat(selectedToken?.userBalance)
@@ -90,7 +92,6 @@ const SendBox = () => {
     }
     console.log(isAmountValid, isRecieverValid);
     if (isAmountValid && isRecieverValid) {
-      console.log("***********************");
       const tempEncodedData = encodeMethodCall({
         receiverAddress,
         amount: parseTokenAmount(tokenAmount, selectedToken?.decimals),
@@ -112,7 +113,6 @@ const SendBox = () => {
         setIsAmountValid(false);
         return;
       }
-      console.log(totalGasCost, "Total Gas Cost");
     }
   }, [
     tokenAmount,
@@ -121,6 +121,7 @@ const SendBox = () => {
     encodedData,
     gasEstimateData,
     gasPrice,
+    lastTransaction,
   ]);
 
   const sendTokens = () => {
@@ -146,25 +147,20 @@ const SendBox = () => {
       setTrnxPrompt("Transaction failed: " + desError.shortMessage);
       setLastTransaction(null);
     } else if (status === "success") {
+      if (data == undefined || chainId == undefined) return;
       const transactionDetails = {
         hash: data,
         isPending: true,
         chainId,
       };
+      console.log("Signed", transactionDetails);
       //Make types same
       setLastTransaction({
         hash: data as string,
         isPending: true,
         chainId: chainId ?? 0,
       });
-      const existingTransactions = JSON.parse(
-        localStorage.getItem("transactions") || "[]"
-      );
-      existingTransactions.push(transactionDetails);
-      localStorage.setItem(
-        "transactions",
-        JSON.stringify(existingTransactions)
-      );
+      storeTransaction(transactionDetails);
       const channel = new BroadcastChannel("transaction_channel");
       channel.postMessage(transactionDetails);
       channel.close();
@@ -174,9 +170,7 @@ const SendBox = () => {
   }, [status]);
 
   useEffect(() => {
-    const existingTransactions = JSON.parse(
-      localStorage.getItem("transactions") || "[]"
-    );
+    const existingTransactions = readTrnxHistory(chainId);
     if (existingTransactions.length > 0) {
       if (existingTransactions[0].isPending === true) {
         setLastTransaction(existingTransactions[0]);
@@ -185,7 +179,6 @@ const SendBox = () => {
     }
     const channel = new BroadcastChannel("transaction_channel");
     channel.onmessage = (event) => {
-      console.log("Received", event.data);
       if (event.data === undefined) return;
       setLastTransaction({
         hash: event.data.hash,
@@ -225,7 +218,7 @@ const SendBox = () => {
           </>
         </ThemeWrapper>
         <ThemeWrapper>
-          <div className=" flex flex-col text-2xl">
+          <div className="w-full flex flex-col text-2xl">
             <StandardInput
               placeholder="0x0"
               label="Receiver Address"

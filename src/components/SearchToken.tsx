@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ConnectKitButton } from "connectkit";
 import TokenResults from "./TokenResults";
 import PopUp from "./PopUp";
+import ThemeWrapper from "./ThemeWrapper";
 interface SearchTokenProps {
   setSearch: (search: boolean) => void;
 }
@@ -10,8 +11,8 @@ const SearchToken = ({ setSearch }: SearchTokenProps) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   return (
     <PopUp prompt="Search Token" setValue={setSearch}>
-      <div className="w-full border-4 flex items-center justify-between border-[#8612F1] rounded-lg">
-        <div className="text-[#8612F1] text-lg p-4 w-3/5">
+      <ThemeWrapper>
+        <div className="text-lg w-3/5">
           <StandardInput
             placeholder="Search Name or paste address"
             label=""
@@ -19,29 +20,7 @@ const SearchToken = ({ setSearch }: SearchTokenProps) => {
             type="text"
           />
         </div>
-        <div className="w-1/5 mr-4">
-          <ConnectKitButton.Custom>
-            {({
-              isConnected,
-              isConnecting,
-              show,
-              hide,
-              address,
-              ensName,
-              chain,
-            }) => {
-              return (
-                <button
-                  onClick={show}
-                  className="bg-[#8612F1] rounded-lg w-full"
-                >
-                  {isConnected ? chain?.name : "Custom Connect"}
-                </button>
-              );
-            }}
-          </ConnectKitButton.Custom>
-        </div>
-      </div>
+      </ThemeWrapper>
       <TokenResults searchQuery={searchQuery} setSearch={setSearch} />
     </PopUp>
   );

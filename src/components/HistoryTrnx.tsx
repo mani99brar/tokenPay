@@ -4,6 +4,10 @@ import SingleTrnx from "./SingleTrnx";
 import PopUp from "./PopUp";
 import StandardButton from "./StandardButton";
 import ThemeWrapper from "./ThemeWrapper";
+import {
+  readTrnxHistory,
+  deleteTrnxHistory,
+} from "@/utils/localStorage/readAndWrite";
 interface Transaction {
   hash: string;
   date: string;
@@ -18,20 +22,13 @@ const HistoryTrnx = ({ setOpen }: HistoryTrnxProps) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const { chainId } = useAccount();
 
-  const deleteHistory = () => {
-    localStorage.removeItem("transactions");
-    setTransactions([]);
+  const handleDeleteHistory = () => {
+    deleteTrnxHistory(chainId);
   };
 
   useEffect(() => {
-    const storedTransactions = localStorage.getItem("transactions");
-    if (storedTransactions) {
-      const allTransactions = JSON.parse(storedTransactions);
-      const filteredTransactions = allTransactions.filter(
-        (trnx: Transaction) => trnx.chainId === chainId
-      );
-      setTransactions(filteredTransactions);
-    }
+    const filteredTransactions = readTrnxHistory(chainId);
+    setTransactions(filteredTransactions);
   }, [chainId]);
 
   return (
@@ -42,12 +39,15 @@ const HistoryTrnx = ({ setOpen }: HistoryTrnxProps) => {
             {transactions.map((trnx) => (
               <ThemeWrapper key={trnx.hash}>
                 <li className="mt-2">
-                  <SingleTrnx hash={trnx.hash} />
+                  <SingleTrnx hash={trnx.hash as `0x${string}`} />
                 </li>
               </ThemeWrapper>
             ))}
           </ul>
-          <StandardButton prompt="Delete History" handleClick={deleteHistory} />
+          <StandardButton
+            prompt="Delete History"
+            handleClick={handleDeleteHistory}
+          />
         </>
       ) : (
         <ThemeWrapper>No transactions.</ThemeWrapper>

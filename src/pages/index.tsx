@@ -4,10 +4,10 @@ import LandingPage from "@/components/LandingPage";
 
 export default function Home() {
   return (
-    <Web3Provider>
-      <GlobalStateProvider>
+    <GlobalStateProvider>
+      <Web3Provider>
         <LandingPage />
-      </GlobalStateProvider>
-    </Web3Provider>
+      </Web3Provider>
+    </GlobalStateProvider>
   );
 }

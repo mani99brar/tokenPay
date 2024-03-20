@@ -17,13 +17,13 @@ const StandardButton = ({
   return (
     <button
       style={{
-        backgroundColor: bgColor,
-        color: textColor,
+        backgroundColor: textColor,
+        color: bgColor,
         borderColor: textColor,
       }}
-      className={`w-full border-[${textColor}] hover:bg-[${textColor}] hover:text-[${bgColor}] font-bold tracking-wide ${
+      className={`w-full  font-bold tracking-wide ${
         size == "small" ? "p-1 border-2" : `p-4 border-4`
-      } rounded-lg`}
+      } rounded-lg ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}`}
       onClick={handleClick}
       disabled={isDisabled}
     >

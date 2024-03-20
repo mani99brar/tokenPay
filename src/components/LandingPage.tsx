@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { useGlobalState } from "@/utils/StateContext";
 import NavBar from "@/components/NavBar";
 import { getThemeColors } from "@/utils/helpers/allHelpers";
+import { readTheme } from "@/utils/localStorage/readAndWrite";
+import Web3Provider from "@/components/Web3Provider";
+
 
 const LandingPage = () => {
   const { uiTheme } = useGlobalState();
