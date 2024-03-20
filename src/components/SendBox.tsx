@@ -50,6 +50,10 @@ const SendBox = () => {
   });
   const { data: gasPrice, refetch: refetchGasPrice } = useGasPrice();
   useEffect(() => {
+    if (selectedToken == null) {
+      setSendMessage("Select Token");
+      return;
+    }
     refetchGas();
     refetchGasPrice();
     if (
@@ -164,7 +168,6 @@ const SendBox = () => {
       const channel = new BroadcastChannel("transaction_channel");
       channel.postMessage(transactionDetails);
       channel.close();
-      setLastTransaction(null);
       setTrnxPrompt("");
     }
   }, [status]);

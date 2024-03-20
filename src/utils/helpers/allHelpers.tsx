@@ -5,8 +5,9 @@ interface Balance {
 }
 
 function formatBalance({ balance, decimals }: Balance) {
-  if (decimals === undefined || balance === undefined) return "";
-
+  if (decimals === undefined || balance === undefined || balance == "")
+    return "";
+  console.log(balance, "Balance");
   try {
     let formattedBalance = ethers.formatUnits(balance, decimals);
     return parseFloat(formattedBalance).toString();

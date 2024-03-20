@@ -34,6 +34,7 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
     );
     if (fetchData?.token != null) {
       const tokenData = fetchData.token;
+      console.log(tokenData);
       const searchedToken = { ...tokenData };
       setTokenList([searchedToken]);
       setLoad(true);
@@ -64,30 +65,32 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
     setSelectedToken({ ...token, chainId });
     setSearch(false);
   };
+  console.log(tokenList, fetchData);
   return (
     <>
       <p className="px-2">Tokens</p>
       <div className="overflow-scroll p-2">
         <ThemeWrapper>
-          <ul className="h-full">
+          <ul className="h-full w-full">
             {load ? (
               <p>Loading...</p>
-            ) : tokenList.length === 0 && !fetchData?.isRefetching ? (
+            ) : tokenList.length === 0 ? (
               <li className="mb-4">No token found</li>
             ) : (
-              tokenList.map(
-                (token) =>
-                  token.name != selectedToken?.name && (
-                    <li
-                      key={token.symbol}
-                      onClick={() => handleTokenSelect(token)}
-                      className="mb-4 cursor-pointer"
-                    >
-                      <p className="font-semibold text-lg">{token.name} </p>
-                      <p>{token.symbol}</p>
-                    </li>
-                  )
-              )
+              tokenList.map((token) => (
+                <li
+                  key={token.symbol}
+                  onClick={() => handleTokenSelect(token)}
+                  className="mb-4 cursor-pointer w-full"
+                >
+                  <p className="font-semibold text-lg">
+                    {token.name != selectedToken?.name
+                      ? `${token.name}`
+                      : "Selected"}
+                  </p>
+                  <p>{token.symbol}</p>
+                </li>
+              ))
             )}
           </ul>
         </ThemeWrapper>

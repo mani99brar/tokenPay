@@ -33,7 +33,10 @@ function updateTrnxHash(
   }
 }
 
-function updateTrnxStatus(transactionHash: `0x${string}`, newStatus: string) {
+function updateTrnxLocalStatus(
+  transactionHash: `0x${string}`,
+  newStatus: string
+) {
   const existingTransactions = JSON.parse(
     localStorage.getItem("transactions") || "[]"
   );
@@ -88,7 +91,7 @@ function readTheme() {
 export {
   storeTransaction,
   updateTrnxHash,
-  updateTrnxStatus,
+  updateTrnxLocalStatus,
   readTrnxHistory,
   deleteTrnxHistory,
   storeOrUpdateTheme,

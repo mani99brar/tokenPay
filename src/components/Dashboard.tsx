@@ -1,8 +1,10 @@
 import { useAccount } from "wagmi";
 import SendBox from "@/components/SendBox";
+import { useEffect } from "react";
 
 const Dashboard = () => {
   const { isDisconnected, isConnected } = useAccount();
+
   return (
     <div className="height-custom w-full flex justify-center">
       {isDisconnected ? (

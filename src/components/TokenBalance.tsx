@@ -9,7 +9,6 @@ interface TokenBalanceProps {
 interface TokenBalanceReturn {
   balance:
     | { decimals: number; formatted: string; symbol: string; value: bigint }
-    | bigint
     | undefined;
   isFetching: boolean;
   refetch: () => void;
@@ -17,42 +16,50 @@ interface TokenBalanceReturn {
 }
 
 const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
-  const { address } = useAccount();
-  const { selectedToken, setSelectedTokenBalance } = useGlobalState();
+  const { address, chainId } = useAccount();
+  const {
+    selectedToken,
+    setSelectedTokenBalance,
+    lastTransaction,
+    setSelectedToken,
+  } = useGlobalState();
   const { balance, isFetching, refetch, isRefetching }: TokenBalanceReturn =
     getTokenBalance(tokenAddress as `0x${string}`, address);
-  //Formating balance to show upto 3 digits
-  let formattedBalance = "";
-  if (
-    tokenAddress == "0x0" &&
-    balance != undefined &&
-    typeof balance !== "bigint"
-  ) {
-    formattedBalance = parseFloat(balance?.formatted).toFixed(3);
-  } else
-    formattedBalance = formatBalance({
-      balance: selectedToken?.userBalance,
-      decimals: selectedToken?.decimals,
-    });
   //Set the balance to the global state
+  const formattedBalance = formatBalance({
+    balance: selectedToken?.userBalance as string,
+    decimals: selectedToken?.decimals as number,
+  });
   useEffect(() => {
-    if (typeof balance === "bigint" && balance != undefined) {
-      setSelectedTokenBalance(balance.toString());
-    } else if (balance?.formatted != undefined) {
+    console.log(balance);
+    if (balance != undefined) {
       console.log("In Token Balance", balance?.formatted);
-      setSelectedTokenBalance(balance?.value.toString());
+      setSelectedTokenBalance(balance.toString());
     } else {
       setSelectedTokenBalance("");
-      refetch;
+      refetch();
     }
   }, [tokenAddress, balance]);
+  useEffect(() => {
+    //Update the balance after each transaction
+    refetch();
+    console.log(lastTransaction, "lastTransaction");
+    console.log(balance);
+    console.log(isRefetching);
+  }, [lastTransaction]);
+
+  useEffect(() => {
+    if (selectedToken?.chainId != chainId) setSelectedToken(null);
+  }, [chainId]);
+
   return (
     <p className="w-full text-end p-2">
-      {isFetching || isRefetching
-        ? "Loading"
-        : selectedToken?.userBalance != ""
-        ? "Balance: " + formattedBalance
-        : "Unknown"}
+      {selectedToken != null &&
+        (isFetching || isRefetching
+          ? "Loading Balance"
+          : selectedToken?.userBalance != ""
+          ? "Balance: " + formattedBalance
+          : "Unknown")}
     </p>
   );
 };

@@ -1,4 +1,4 @@
-import { useReadContract, useBalance } from "wagmi";
+import { useReadContract } from "wagmi";
 import abi from "@/utils/abi/ERC20.json";
 
 //Only refetching for balance as the name, symbol or decimals will not change and very unlikely that
@@ -46,36 +46,28 @@ function getTokenData(
     const token = null;
     return { token, refetch };
   }
-  const token = { contractAddress, name, symbol, decimals, balance } as any;
+  const token = {
+    address: contractAddress,
+    name,
+    symbol,
+    decimals,
+    balance,
+  } as any;
   return { token, refetch, isRefetching };
 }
 interface TokenBalanceReturn {
   balance:
     | { decimals: number; formatted: string; symbol: string; value: bigint }
-    | bigint
     | undefined;
   isFetching: boolean;
   refetch: () => void;
   isRefetching: boolean;
 }
 
-
-
 function getTokenBalance(
   contractAddress: `0x${string}`,
   userAddress: `0x${string}` | undefined
 ) {
-  if (contractAddress === "0x0") {
-    const {
-      data: balance,
-      isFetching,
-      refetch,
-      isRefetching,
-    } = useBalance({
-      address: userAddress,
-    });
-    return { balance, isFetching, refetch, isRefetching } as TokenBalanceReturn;
-  }
   const {
     data: balance,
     isFetching,

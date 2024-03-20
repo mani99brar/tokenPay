@@ -4,7 +4,7 @@ import TokenBalance from "./TokenBalance";
 import { useState, useEffect } from "react";
 import { useGlobalState } from "@/utils/StateContext";
 import { getThemeColors } from "@/utils/helpers/allHelpers";
-
+import { useAccount } from "wagmi";
 type TokenData = {
   address: string;
   name: string;

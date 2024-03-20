@@ -3,12 +3,13 @@ import tokens from "./tokenData.json";
 import { readTheme, storeOrUpdateTheme } from "./localStorage/readAndWrite";
 interface GlobalContextType {
   selectedToken: token | null;
-  setSelectedToken: (token: token) => void;
+  setSelectedToken: (token: token | null) => void;
   setSelectedTokenBalance: (balance: string) => void;
   lastTransaction: Transaction | null;
   setLastTransaction: (transaction: Transaction | null) => void;
   uiTheme: string;
   setAllUiTheme: (theme: string) => void;
+  updateLastTransactionState: () => void;
 }
 
 interface token {
@@ -30,9 +31,7 @@ interface Transaction {
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 export const GlobalStateProvider: React.FC<any> = ({ children }) => {
-  const [selectedToken, setSelectedToken] = useState<token>(
-    tokens.allTokens[0]
-  );
+  const [selectedToken, setSelectedToken] = useState<token | null>(null);
   const [lastTransaction, setLastTransaction] = useState<Transaction | null>(
     null
   );
@@ -45,10 +44,25 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
   }, []);
 
   const setSelectedTokenBalance = (balance: string) => {
-    setSelectedToken((prevToken) => ({
-      ...prevToken,
-      userBalance: balance,
-    }));
+    setSelectedToken((prevToken) => {
+      if (prevToken === null) {
+        console.warn("No selected token to update balance for.");
+        return null;
+      }
+      return { ...prevToken, userBalance: balance };
+    });
+  };
+
+  const updateLastTransactionState = () => {
+    setLastTransaction((prevTransaction) => {
+      if (!prevTransaction) {
+        return null;
+      }
+      return {
+        ...prevTransaction,
+        isPending: false,
+      };
+    });
   };
 
   const setAllUiTheme = (theme: string) => {
@@ -64,6 +78,7 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
     setLastTransaction,
     uiTheme,
     setAllUiTheme,
+    updateLastTransactionState,
   };
 
   return (

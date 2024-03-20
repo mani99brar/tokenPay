@@ -2,28 +2,33 @@ import { useEffect, useState } from "react";
 import { useWaitForTransactionReceipt, useAccount } from "wagmi";
 import SingleTrnx from "./SingleTrnx";
 import PopUp from "./PopUp";
-import {
-  updateTrnxStatus,
-  updateTrnxHash,
-} from "@/utils/localStorage/readAndWrite";
+import { updateTrnxLocalStatus } from "@/utils/localStorage/readAndWrite";
 import ThemeWrapper from "./ThemeWrapper";
-interface Transaction {
+import { useGlobalState } from "@/utils/StateContext";
+interface TransactionProps {
   transactionHash: `0x${string}` | undefined;
   setTrnx: (trnx: boolean) => void;
   trnxPrompt: string;
+}
+
+interface Transaction {
+  hash: string;
+  isPending: boolean;
+  chainId: number;
 }
 
 const TransactionStatus = ({
   transactionHash,
   setTrnx,
   trnxPrompt,
-}: Transaction) => {
+}: TransactionProps) => {
   const { data, isError, isLoading } = useWaitForTransactionReceipt({
     hash: transactionHash,
   });
   const [statusMessage, setStatusMessage] = useState(
     "Waiting for transaction..."
   );
+  const { updateLastTransactionState } = useGlobalState();
 
   useEffect(() => {
     if (isLoading) {
@@ -31,7 +36,10 @@ const TransactionStatus = ({
     } else if (isError) {
       setStatusMessage("Transaction failed.");
     } else if (data) {
-      if (transactionHash) updateTrnxStatus(transactionHash, "success");
+      if (transactionHash) {
+        updateTrnxLocalStatus(transactionHash, "success");
+        updateLastTransactionState();
+      }
       setStatusMessage("Transaction succeeded!");
     }
   }, [transactionHash, data, isError, isLoading]);
