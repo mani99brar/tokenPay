@@ -13,7 +13,6 @@ const SingleTrnx = ({ hash }: TrnxHash) => {
   const { data, isError, isLoading } = useWaitForTransactionReceipt({
     hash: hash as `0x${string}`,
     onReplaced: (replacement) => {
-      console.log(replacement, "Sped up");
       if (hash) updateTrnxHash(hash, replacement.transaction.hash);
       setSpedUp(true);
     },

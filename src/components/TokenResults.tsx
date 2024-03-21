@@ -28,13 +28,11 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
   const fetchData = getTokenData(searchQuery, address);
   useEffect(() => {
     setLoad(true);
-    if (fetchData?.refetch) fetchData?.refetch();
     const filteredTokens = tokens.allTokens.filter(
       (token) => token.chainId === chainId
     );
     if (fetchData?.token != null) {
       const tokenData = fetchData.token;
-      console.log(tokenData);
       const searchedToken = { ...tokenData };
       setTokenList([searchedToken]);
       setLoad(true);
@@ -45,7 +43,7 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
           token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setTokenList(searchResults);
-      if (!ethers.isAddress(searchQuery)) setLoad(false);
+      if (!fetchData?.isFetched) setLoad(false);
     } else {
       setTokenList(filteredTokens);
       setLoad(false);
@@ -65,7 +63,6 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
     setSelectedToken({ ...token, chainId });
     setSearch(false);
   };
-  console.log(tokenList, fetchData);
   return (
     <>
       <p className="px-2">Tokens</p>

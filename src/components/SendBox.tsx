@@ -94,7 +94,6 @@ const SendBox = () => {
         setSendMessage("Enter Inputs");
       }
     }
-    console.log(isAmountValid, isRecieverValid);
     if (isAmountValid && isRecieverValid) {
       const tempEncodedData = encodeMethodCall({
         receiverAddress,
@@ -157,7 +156,6 @@ const SendBox = () => {
         isPending: true,
         chainId,
       };
-      console.log("Signed", transactionDetails);
       //Make types same
       setLastTransaction({
         hash: data as string,
@@ -245,7 +243,7 @@ const SendBox = () => {
           <ThemeWrapper>
             <div className="flex flex-col">
               <p>Network Stats:</p>
-              <div className="flex justify-between flex-col items-start mt-2 ">
+              <div className="flex justify-between flex-col items-start ">
                 <p className="text-lg font-bold">
                   Gas Price: {gasPrice.toString()} wei
                 </p>

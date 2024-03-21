@@ -33,7 +33,6 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   useEffect(() => {
     console.log(balance);
     if (balance != undefined) {
-      console.log("In Token Balance", balance?.formatted);
       setSelectedTokenBalance(balance.toString());
     } else {
       setSelectedTokenBalance("");
@@ -43,9 +42,6 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   useEffect(() => {
     //Update the balance after each transaction
     refetch();
-    console.log(lastTransaction, "lastTransaction");
-    console.log(balance);
-    console.log(isRefetching);
   }, [lastTransaction]);
 
   useEffect(() => {

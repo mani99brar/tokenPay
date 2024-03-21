@@ -1,13 +1,11 @@
 import { useAccount } from "wagmi";
 import SendBox from "@/components/SendBox";
-import { useEffect } from "react";
 
 const Dashboard = () => {
-  const { isDisconnected, isConnected } = useAccount();
-
+  const { isDisconnected, isConnected, isConnecting } = useAccount();
   return (
     <div className="height-custom w-full flex justify-center">
-      {isDisconnected ? (
+      {isDisconnected || isConnecting ? (
         <div className="text-6xl w-1/2 text-center mt-8 font-bold">
           Connect Wallet and start sending tokens.
         </div>

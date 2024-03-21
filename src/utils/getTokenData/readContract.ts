@@ -13,6 +13,7 @@ function getTokenData(
     data: balance,
     refetch,
     isRefetching,
+    isFetched,
   } = useReadContract({
     abi,
     address: contractAddress,
@@ -53,7 +54,7 @@ function getTokenData(
     decimals,
     balance,
   } as any;
-  return { token, refetch, isRefetching };
+  return { token, refetch, isRefetching, isFetched };
 }
 interface TokenBalanceReturn {
   balance:

@@ -24,11 +24,12 @@ const HistoryTrnx = ({ setOpen }: HistoryTrnxProps) => {
 
   const handleDeleteHistory = () => {
     deleteTrnxHistory(chainId);
+    setTransactions([]);
   };
 
   useEffect(() => {
     const filteredTransactions = readTrnxHistory(chainId);
-    setTransactions(filteredTransactions);
+    setTransactions(filteredTransactions.reverse());
   }, [chainId]);
 
   return (
