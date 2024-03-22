@@ -19,7 +19,7 @@ const StandardButton = ({
       style={{
         backgroundColor: textColor,
         color: bgColor,
-        borderColor: textColor,
+        borderColor: bgColor,
       }}
       className={`w-full  font-bold tracking-wide ${
         size == "small" ? "p-1 border-2" : `p-4 border-4`

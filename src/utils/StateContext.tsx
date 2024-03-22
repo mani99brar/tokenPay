@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import tokens from "./tokenData.json";
 import { readTheme, storeOrUpdateTheme } from "./localStorage/readAndWrite";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 interface GlobalContextType {
   selectedToken: token | null;
   setSelectedToken: (token: token | null) => void;

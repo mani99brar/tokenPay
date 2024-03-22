@@ -15,7 +15,9 @@ const LandingPage = () => {
     setIsMounted(true);
   }, []);
   return (
-    <main className={`w-full flex flex-col items-center ${bgClass} h-screen`}>
+    <main
+      className={`w-full flex flex-col items-center ${bgClass} min-h-screen`}
+    >
       <NavBar />
       {isMounted && <Dashboard />}
     </main>

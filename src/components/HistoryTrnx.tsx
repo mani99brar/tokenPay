@@ -51,7 +51,9 @@ const HistoryTrnx = ({ setOpen }: HistoryTrnxProps) => {
           />
         </>
       ) : (
-        <ThemeWrapper>No transactions.</ThemeWrapper>
+        <ThemeWrapper>
+          <p className="w-1/2">No transactions.</p>
+        </ThemeWrapper>
       )}
     </PopUp>
   );

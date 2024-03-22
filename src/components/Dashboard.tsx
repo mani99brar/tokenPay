@@ -11,8 +11,10 @@ const Dashboard = () => {
         </div>
       ) : (
         isConnected && (
-          <div className="mt-8 w-4/6 flex flex-col items-center space-y-4">
-            <p className="text-4xl font-bold">Send tokens to addresses</p>
+          <div className="mt-8 md:w-3/5 sm:w-4/5 w-full px-4 sm:px-0 flex flex-col items-center space-y-4">
+            <p className="sm:text-4xl text-2xl font-bold">
+              Send tokens to addresses
+            </p>
             <SendBox />
           </div>
         )

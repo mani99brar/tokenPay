@@ -51,7 +51,7 @@ const SendBox = () => {
   const { data: gasPrice, refetch: refetchGasPrice } = useGasPrice();
   useEffect(() => {
     if (selectedToken == null) {
-      setSendMessage("Select Token");
+      setSendMessage("Please Select Token");
       return;
     }
     refetchGas();
@@ -192,10 +192,10 @@ const SendBox = () => {
   }, []);
 
   return (
-    <div className="flex w-full space-x-2">
+    <div className="flex w-full flex-col lg:flex-row lg:space-x-2 lg:space-y-0 space-y-2">
       <div
         style={{ backgroundColor: bgColor }}
-        className={`w-3/4 bg-[${bgColor}] rounded-lg flex flex-col space-y-2 p-2`}
+        className={`lg:w-3/5 w-full bg-[${bgColor}] rounded-lg flex flex-col space-y-2 p-2`}
       >
         {isTrnxActive && (
           <TransactionStatus
@@ -206,7 +206,7 @@ const SendBox = () => {
         )}
         <ThemeWrapper>
           <>
-            <div className="w-3/6 flex flex-col text-2xl">
+            <div className="w-3/5 flex flex-col text-2xl">
               <StandardInput
                 placeholder="0"
                 label="Token Amount"
@@ -235,31 +235,36 @@ const SendBox = () => {
           prompt={sendMesasge}
         />
       </div>
-      {gasPrice != undefined && (
-        <div
-          style={{ backgroundColor: bgColor }}
-          className={`w-1/4  rounded-lg flex flex-col justify-between p-2`}
-        >
-          <ThemeWrapper>
-            <div className="flex flex-col">
-              <p>Network Stats:</p>
-              <div className="flex justify-between flex-col items-start ">
-                <p className="text-lg font-bold">
-                  Gas Price: {gasPrice.toString()} wei
-                </p>
-                <p className="text-justify mt-4">
-                  Gas prices are high transaction may take longer than avg.
-                </p>
-              </div>
+
+      <div
+        style={{ backgroundColor: bgColor }}
+        className={`lg:w-2/6 w-full h-full rounded-lg flex items-center sm:items-stretch flex-col sm:flex-row lg:flex-col justify-between p-2`}
+      >
+        <ThemeWrapper size="fill">
+          <div className="flex w-full  h-full justify-between flex-col">
+            <div className="flex lg:flex-col w-full sm:flex-row flex-col items-center justify-between">
+              <p className="font-bold w-full sm:w-1/2 lg:w-full">
+                Gas Price: <br />
+                <span>
+                  {gasPrice === undefined ? "Fetching..." : gasPrice.toString()}{" "}
+                  wei
+                </span>
+              </p>
+              <p className=" lg:mt-4 w-full sm:w-1/2 lg:w-full">
+                Average Wait time : 5 mins
+              </p>
             </div>
-          </ThemeWrapper>
+          </div>
+        </ThemeWrapper>
+        <div className="lg:w-full mt-2 ml-2 lg:ml-0 sm:mt-0 lg:mt-2 flex w-full sm:w-1/4">
           <StandardButton
-            prompt="Previous Transactions"
+            prompt="History"
             handleClick={() => setShowHistory(true)}
           />
-          {showHistory && <HistoryTrnx setOpen={setShowHistory} />}
         </div>
-      )}
+
+        {showHistory && <HistoryTrnx setOpen={setShowHistory} />}
+      </div>
     </div>
   );
 };
