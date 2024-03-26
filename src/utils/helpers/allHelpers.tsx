@@ -26,12 +26,11 @@ function parseTokenAmount(
     return "";
   }
   try {
-    // Use ethers to parse the amount
     const parsedAmount = ethers.parseUnits(amount.toString(), decimals);
     return parsedAmount.toString();
   } catch (error) {
     console.error("Error parsing token amount:", error);
-    return ""; // Return an empty string in case of any error
+    return "";
   }
 }
 
@@ -42,6 +41,7 @@ interface MethodCall {
 
 function encodeMethodCall({ receiverAddress, amount }: MethodCall) {
   if (amount === "") return "";
+  if (!ethers.isAddress(receiverAddress)) return "";
   const iface = new ethers.Interface([
     "function transfer(address to, uint256 value) external returns (bool)",
   ]);
@@ -59,8 +59,6 @@ function getThemeColors(theme: string): [string, string, string] {
   const themeColors: { [key: string]: [string, string, string] } = {
     "Purple Hollow": ["#8612F1", "#fff", "purpleHollow"],
     "White Hollow": ["#fff", "#8612F1", "whiteHollow"],
-    // "Black Hollow": ["#000", "#8612F1"],
-    // "Purple Solid": ["#8612F1", "#000"],
     "White Solid": ["#fff", "#000", "whiteSolid"],
     "Black Solid": ["#000", "#fff", "blackSolid"],
   };
@@ -69,6 +67,7 @@ function getThemeColors(theme: string): [string, string, string] {
 
   return themeColors[theme] || defaultColors;
 }
+
 
 export {
   getThemeColors,

@@ -35,7 +35,7 @@ function updateTrnxHash(
 
 function updateTrnxLocalStatus(
   transactionHash: `0x${string}`,
-  newStatus: string
+  newStatus: boolean
 ) {
   const existingTransactions = JSON.parse(
     localStorage.getItem("transactions") || "[]"

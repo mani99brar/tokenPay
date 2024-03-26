@@ -2,7 +2,6 @@ import tokens from "@/utils/tokenData.json";
 import { getTokenData } from "@/utils/getTokenData/readContract";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
-import { ethers } from "ethers";
 import { useGlobalState } from "@/utils/StateContext";
 import ThemeWrapper from "./ThemeWrapper";
 
@@ -60,6 +59,10 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
 
   const handleTokenSelect = (token: TokenData) => {
     if (chainId == undefined) return;
+    if (selectedToken?.address == token.address) {
+      setSearch(false);
+      return;
+    }
     setSelectedToken({ ...token, chainId });
     setSearch(false);
   };

@@ -4,6 +4,15 @@ type Transaction = {
   chainId: number;
 };
 
+type Token = {
+  name: string;
+  symbol: string;
+  decimals: number;
+  image?: string;
+  chainId: number;
+  address: string;
+  userBalance?: string;
+};
 
 
-export type { Transaction };
+export type { Transaction, Token };

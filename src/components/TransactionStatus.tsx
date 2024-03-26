@@ -28,7 +28,7 @@ const TransactionStatus = ({
   const [statusMessage, setStatusMessage] = useState(
     "Waiting for transaction..."
   );
-  const { updateLastTransactionState } = useGlobalState();
+  const { updateActiveTransactionState } = useGlobalState();
 
   useEffect(() => {
     if (isLoading) {
@@ -36,9 +36,10 @@ const TransactionStatus = ({
     } else if (isError) {
       setStatusMessage("Transaction failed.");
     } else if (data) {
-      if (transactionHash) {
-        updateTrnxLocalStatus(transactionHash, "success");
-        updateLastTransactionState();
+      console.log(data);
+      if (transactionHash && data.status === "success") {
+        updateActiveTransactionState();
+        updateTrnxLocalStatus(transactionHash, false);
       }
       setStatusMessage("Transaction succeeded!");
     }
@@ -49,14 +50,14 @@ const TransactionStatus = ({
       <div className="w-full h-full flex flex-col p-4">
         {trnxPrompt != "" ? (
           <div className="h-full flex flex-col items-center">
-            <ThemeWrapper>
+            <ThemeWrapper size="fill">
               <p className="h-full rounded-lg text-2xl font-bold">
                 {trnxPrompt}
               </p>
             </ThemeWrapper>
           </div>
         ) : (
-          <ThemeWrapper>
+          <ThemeWrapper size="fill">
             <div className="flex flex-col mb-4 space-y-4">
               <p className="text-2xl font-bold">{statusMessage}</p>
               {transactionHash != undefined && (

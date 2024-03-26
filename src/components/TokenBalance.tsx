@@ -20,7 +20,7 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   const {
     selectedToken,
     setSelectedTokenBalance,
-    lastTransaction,
+    activeTransaction,
     setSelectedToken,
   } = useGlobalState();
   const { balance, isFetching, refetch, isRefetching }: TokenBalanceReturn =
@@ -42,7 +42,7 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   useEffect(() => {
     //Update the balance after each transaction
     refetch();
-  }, [lastTransaction]);
+  }, [activeTransaction]);
 
   useEffect(() => {
     if (selectedToken?.chainId != chainId) setSelectedToken(null);

@@ -5,11 +5,11 @@ interface GlobalContextType {
   selectedToken: token | null;
   setSelectedToken: (token: token | null) => void;
   setSelectedTokenBalance: (balance: string) => void;
-  lastTransaction: Transaction | null;
-  setLastTransaction: (transaction: Transaction | null) => void;
+  activeTransaction: Transaction | null;
+  setActiveTransaction: (transaction: Transaction | null) => void;
   uiTheme: string;
   setAllUiTheme: (theme: string) => void;
-  updateLastTransactionState: () => void;
+  updateActiveTransactionState: () => void;
 }
 
 interface token {
@@ -32,9 +32,8 @@ const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 export const GlobalStateProvider: React.FC<any> = ({ children }) => {
   const [selectedToken, setSelectedToken] = useState<token | null>(null);
-  const [lastTransaction, setLastTransaction] = useState<Transaction | null>(
-    null
-  );
+  const [activeTransaction, setActiveTransaction] =
+    useState<Transaction | null>(null);
 
   const [uiTheme, setUiTheme] = useState<string>("");
 
@@ -53,8 +52,8 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
     });
   };
 
-  const updateLastTransactionState = () => {
-    setLastTransaction((prevTransaction) => {
+  const updateActiveTransactionState = () => {
+    setActiveTransaction((prevTransaction) => {
       if (!prevTransaction) {
         return null;
       }
@@ -74,11 +73,11 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
     selectedToken,
     setSelectedToken,
     setSelectedTokenBalance,
-    lastTransaction,
-    setLastTransaction,
+    activeTransaction,
+    setActiveTransaction,
     uiTheme,
     setAllUiTheme,
-    updateLastTransactionState,
+    updateActiveTransactionState,
   };
 
   return (

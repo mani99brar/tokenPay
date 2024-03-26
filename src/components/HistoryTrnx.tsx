@@ -51,7 +51,7 @@ const HistoryTrnx = ({ setOpen }: HistoryTrnxProps) => {
           />
         </>
       ) : (
-        <ThemeWrapper>
+        <ThemeWrapper size="fill">
           <p className="w-1/2">No transactions.</p>
         </ThemeWrapper>
       )}
