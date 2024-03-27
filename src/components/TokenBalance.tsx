@@ -2,7 +2,11 @@ import { getTokenBalance } from "@/utils/getTokenData/readContract";
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
 import { useGlobalState } from "@/utils/StateContext";
-import { formatBalance } from "@/utils/helpers/allHelpers";
+import { formatBalance, scientificToDecimal } from "@/utils/helpers/allHelpers";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+
 interface TokenBalanceProps {
   tokenAddress: string;
 }
@@ -31,7 +35,6 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
     decimals: selectedToken?.decimals as number,
   });
   useEffect(() => {
-
     if (balance != undefined) {
       setSelectedTokenBalance(balance.toString());
     } else {
@@ -48,14 +51,30 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
     if (selectedToken?.chainId != chainId) setSelectedToken(null);
   }, [chainId]);
 
+  const copyToClipboard = async () => {
+    if (formattedBalance) {
+      try {
+        if (balance != undefined)
+          await navigator.clipboard.writeText(
+            scientificToDecimal(formattedBalance)
+          );
+      } catch (err) {
+        console.error("Failed to copy balance to clipboard", err);
+      }
+    }
+  };
   return (
-    <p className="w-full text-end p-2">
+    <p className="w-full text-end p-2 cursor-pointer" onClick={copyToClipboard}>
       {selectedToken != null &&
-        (isFetching || isRefetching
-          ? "Loading Balance"
-          : selectedToken?.userBalance != ""
-          ? "Balance: " + formattedBalance
-          : "Unknown")}
+        (isFetching || isRefetching ? (
+          "Loading Balance"
+        ) : selectedToken?.userBalance != "" ? (
+          <>
+            <FontAwesomeIcon icon={faCopy} /> Balance: {formattedBalance}
+          </>
+        ) : (
+          "Unknown"
+        ))}
     </p>
   );
 };

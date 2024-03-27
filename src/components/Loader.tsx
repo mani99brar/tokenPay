@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Loader = () => {
   return (
-    <div className="w-full flex spinner justify-center mt-16 text-8xl">
+    <div className="w-full flex spinner justify-center mt-16 mb-16 text-8xl">
       <FontAwesomeIcon icon={faSpinner} />
     </div>
   );

@@ -9,6 +9,8 @@ function formatBalance({ balance, decimals }: Balance) {
     return "";
   try {
     let formattedBalance = ethers.formatUnits(balance, decimals);
+    if (formattedBalance.length > 10)
+      return parseFloat(formattedBalance).toExponential(1);
     return parseFloat(formattedBalance).toString();
   } catch (error) {
     console.error("Error formatting balance:", error);
@@ -26,6 +28,7 @@ function parseTokenAmount(
   }
   try {
     const parsedAmount = ethers.parseUnits(amount.toString(), decimals);
+    console.log(parsedAmount);
     return parsedAmount.toString();
   } catch (error) {
     console.error("Error parsing token amount:", error);
@@ -92,6 +95,37 @@ async function getERC20TokenHistory(
   }
 }
 
+function scientificToDecimal(num: number) {
+  const sign = Math.sign(num);
+  // Check if the number is in scientific notation
+  let strNum = num.toString();
+  if (!/e/i.test(strNum)) {
+    return strNum;
+  }
+
+  let [base, exponent] = strNum.split("e").map((part) => parseInt(part, 10));
+  let decimalStr = base.toString();
+
+  if (exponent > 0) {
+    let decimalSplit = decimalStr.split(".");
+    let wholePart = decimalSplit[0];
+    let decimalPart = decimalSplit[1] || "";
+
+    let zerosToAdd = exponent - decimalPart.length;
+    for (let i = 0; i < zerosToAdd; i++) {
+      decimalPart += "0";
+    }
+    decimalStr = wholePart + decimalPart;
+  } else {
+    // For negative exponent, the approach would be different, focusing on adding zeros before the number
+    let zerosToAdd = Math.abs(exponent) - 1; // -1 because the dot moves
+    let zeroString = "0.".padEnd(zerosToAdd + 2, "0"); // +2 for '0.' prefix
+    decimalStr = zeroString + base.toString().replace("-", "");
+  }
+
+  return sign < 0 ? "-" + decimalStr : decimalStr;
+}
+
 export {
   getThemeColors,
   parseTokenAmount,
@@ -99,4 +133,5 @@ export {
   encodeMethodCall,
   trimAddress,
   getERC20TokenHistory,
+  scientificToDecimal,
 };

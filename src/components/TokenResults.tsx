@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useGlobalState } from "@/utils/StateContext";
 import ThemeWrapper from "./ThemeWrapper";
 import Loader from "./Loader";
-
+import { ethers } from "ethers";
 type TokenData = {
   address: string;
   name: string;
@@ -26,6 +26,7 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
   const [tokenList, setTokenList] = useState<TokenData[]>([]);
   const [load, setLoad] = useState<boolean>(false);
   const fetchData = getTokenData(searchQuery, address);
+
   useEffect(() => {
     setLoad(true);
     const filteredTokens = tokens.allTokens.filter(
@@ -35,7 +36,7 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
       const tokenData = fetchData.token;
       const searchedToken = { ...tokenData };
       setTokenList([searchedToken]);
-      setLoad(true);
+      setLoad(false);
     } else if (searchQuery != "") {
       const searchResults = filteredTokens.filter(
         (token) =>
@@ -43,7 +44,8 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
           token.symbol.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setTokenList(searchResults);
-      if (!fetchData?.isFetched) setLoad(false);
+      if (fetchData?.isFetched || !ethers.isAddress(searchQuery))
+        setLoad(false);
     } else {
       setTokenList(filteredTokens);
       setLoad(false);
@@ -70,9 +72,9 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
   return (
     <>
       <p className="px-2">Tokens</p>
-      <div className="overflow-scroll p-2">
-        <ThemeWrapper>
-          <ul className="h-full w-full">
+      <div className="overflow-hidden p-2">
+        <ThemeWrapper size="fill">
+          <ul className="h-full w-full overflow-scroll">
             {load ? (
               <Loader />
             ) : tokenList.length === 0 ? (

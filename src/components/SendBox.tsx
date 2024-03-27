@@ -50,6 +50,10 @@ const SendBox = () => {
     });
   };
 
+  const checkAndSetTokenAmount = (amount: string) => {
+    if (parseFloat(amount) < 0) return;
+    setTokenAmount(amount);
+  };
   useEffect(() => {
     if (status === "pending") {
       setIsTrnxActive(true);
@@ -119,8 +123,9 @@ const SendBox = () => {
                 placeholder="0"
                 label="Token Amount"
                 value={tokenAmount}
-                setValue={setTokenAmount}
+                setValue={checkAndSetTokenAmount}
                 type="number"
+                min={0}
               />
             </div>
             <TokenActions />

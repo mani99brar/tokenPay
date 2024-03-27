@@ -31,7 +31,7 @@ color: black;
 }
 
 .spinner{
-  animation: spinner 2s linear 0s infinite forwards normal;
+  animation: spinner 1.4s linear 0s infinite forwards normal;
 }
 
 @keyframes spinner {

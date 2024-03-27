@@ -12,11 +12,6 @@ interface TransactionProps {
   trnxPrompt: string;
 }
 
-interface Transaction {
-  hash: string;
-  isPending: boolean;
-  chainId: number;
-}
 
 const TransactionStatus = ({
   transactionHash,

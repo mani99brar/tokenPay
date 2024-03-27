@@ -6,6 +6,7 @@ interface StandardInputProps {
   setValue: (value: string) => void;
   type: string;
   value?: string;
+  min?: number;
 }
 
 const StandardInput = ({
@@ -14,6 +15,7 @@ const StandardInput = ({
   setValue,
   type,
   value,
+  min,
 }: StandardInputProps) => {
   const { uiTheme } = useGlobalState();
   const [textColor, bgColor] = getThemeColors(uiTheme);
@@ -46,6 +48,7 @@ const StandardInput = ({
         placeholder={placeholder}
         value={value}
         id="token"
+        min={min}
         onChange={(e) => setValue(e.target.value)}
       />
     </>
