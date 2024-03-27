@@ -31,7 +31,7 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
     decimals: selectedToken?.decimals as number,
   });
   useEffect(() => {
-    console.log(balance);
+
     if (balance != undefined) {
       setSelectedTokenBalance(balance.toString());
     } else {

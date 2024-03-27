@@ -15,8 +15,6 @@ const LandingPage = () => {
   const { chainId } = useAccount();
   useEffect(() => {
     setIsMounted(true);
-    const existingTransaction = readTrnxHistory(chainId);
-    console.log(existingTransaction);
     const stopListening = listenForMessages((data: Message) => {
       console.log(data);
       if (data.type === "theme" && data.theme) setAllUiTheme(data.theme);

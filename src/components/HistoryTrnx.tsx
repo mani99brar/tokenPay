@@ -4,14 +4,17 @@ import SingleTrnx from "./SingleTrnx";
 import PopUp from "./PopUp";
 import StandardButton from "./StandardButton";
 import ThemeWrapper from "./ThemeWrapper";
-import {
-  readTrnxHistory,
-  deleteTrnxHistory,
-} from "@/utils/localStorage/readAndWrite";
+import TransactionDetails from "./TransactionDetails";
+import { getERC20TokenHistory } from "@/utils/helpers/allHelpers";
+import { formatBalance, trimAddress } from "@/utils/helpers/allHelpers";
+import Loader from "./Loader";
 interface Transaction {
   hash: string;
-  date: string;
-  chainId: number;
+  timeStamp: number;
+  tokenSymbol: string;
+  value: string;
+  tokenDecimal: string;
+  to: string;
 }
 
 interface HistoryTrnxProps {
@@ -20,40 +23,66 @@ interface HistoryTrnxProps {
 
 const HistoryTrnx = ({ setOpen }: HistoryTrnxProps) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const { chainId } = useAccount();
-
-  const handleDeleteHistory = () => {
-    deleteTrnxHistory(chainId);
-    setTransactions([]);
+  const { address, chainId } = useAccount();
+  const [page, setPage] = useState(0);
+  const [load, setLoad] = useState(false);
+  const handlePaging = () => {
+    setPage((prev) => prev + 1);
   };
 
   useEffect(() => {
-    const filteredTransactions = readTrnxHistory(chainId);
-    setTransactions(filteredTransactions.reverse());
-  }, [chainId]);
+    setLoad(true);
+    if (page == 0) setPage(1);
+    async function getHistory() {
+      if (address === undefined || chainId === undefined) return;
+      const historyData = await getERC20TokenHistory(address, chainId, page);
+      console.log(historyData);
+      if (historyData != undefined && historyData.status == 1 && page > 0) {
+        setTransactions((currentTransactions) => [
+          ...currentTransactions,
+          ...historyData.result,
+        ]);
+        setLoad(false);
+      }
+    }
+    getHistory();
+  }, [page]);
 
   return (
     <PopUp prompt="Transaction History" setValue={setOpen}>
       {transactions.length > 0 ? (
         <>
-          <ul className="space-y-4 h-full overflow-scroll">
+          <ul className="space-y-4 h-full w-full overflow-scroll">
             {transactions.map((trnx) => (
               <ThemeWrapper key={trnx.hash}>
-                <li className="mt-2">
-                  <SingleTrnx hash={trnx.hash as `0x${string}`} />
+                <li className="mt-2 w-full">
+                  <TransactionDetails
+                    hash={trnx.hash}
+                    date={trnx.timeStamp}
+                    symbol={trnx.tokenSymbol}
+                    amount={formatBalance({
+                      balance: BigInt(trnx.value).toString(),
+                      decimals: parseInt(trnx.tokenDecimal),
+                    })}
+                    sender={trimAddress(address === undefined ? "" : address)}
+                    receiver={trimAddress(trnx.to)}
+                  />
                 </li>
               </ThemeWrapper>
             ))}
           </ul>
-          <StandardButton
-            prompt="Delete History"
-            handleClick={handleDeleteHistory}
-          />
+          <StandardButton prompt="Show More" handleClick={handlePaging} />
         </>
       ) : (
-        <ThemeWrapper size="fill">
-          <p className="w-1/2">No transactions.</p>
-        </ThemeWrapper>
+        <p className="w-full">
+          {load ? (
+            <>
+              <Loader />
+            </>
+          ) : (
+            "No transactions."
+          )}
+        </p>
       )}
     </PopUp>
   );

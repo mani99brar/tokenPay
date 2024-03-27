@@ -5,6 +5,7 @@ import PopUp from "./PopUp";
 import { updateTrnxLocalStatus } from "@/utils/localStorage/readAndWrite";
 import ThemeWrapper from "./ThemeWrapper";
 import { useGlobalState } from "@/utils/StateContext";
+import Loader from "./Loader";
 interface TransactionProps {
   transactionHash: `0x${string}` | undefined;
   setTrnx: (trnx: boolean) => void;
@@ -49,21 +50,20 @@ const TransactionStatus = ({
     <PopUp prompt="Transaction Status" setValue={setTrnx}>
       <div className="w-full h-full flex flex-col p-4">
         {trnxPrompt != "" ? (
-          <div className="h-full flex flex-col items-center">
+          <div className="h-full flex w-full flex-col space-y-4 items-center">
             <ThemeWrapper size="fill">
               <p className="h-full rounded-lg text-2xl font-bold">
                 {trnxPrompt}
+                {!isError && <Loader />}
               </p>
             </ThemeWrapper>
           </div>
         ) : (
           <ThemeWrapper size="fill">
-            <div className="flex flex-col mb-4 space-y-4">
+            <div className="flex flex-col w-full space-y-4">
               <p className="text-2xl font-bold">{statusMessage}</p>
               {transactionHash != undefined && (
-                <ThemeWrapper>
-                  <SingleTrnx hash={transactionHash} />
-                </ThemeWrapper>
+                <SingleTrnx hash={transactionHash} />
               )}
             </div>
           </ThemeWrapper>

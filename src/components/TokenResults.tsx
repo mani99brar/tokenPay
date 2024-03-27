@@ -4,6 +4,7 @@ import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { useGlobalState } from "@/utils/StateContext";
 import ThemeWrapper from "./ThemeWrapper";
+import Loader from "./Loader";
 
 type TokenData = {
   address: string;
@@ -73,7 +74,7 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
         <ThemeWrapper>
           <ul className="h-full w-full">
             {load ? (
-              <p>Loading...</p>
+              <Loader />
             ) : tokenList.length === 0 ? (
               <li className="mb-4">No token found</li>
             ) : (

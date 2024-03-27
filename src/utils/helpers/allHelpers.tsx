@@ -7,7 +7,6 @@ interface Balance {
 function formatBalance({ balance, decimals }: Balance) {
   if (decimals === undefined || balance === undefined || balance == "")
     return "";
-  console.log(balance, "Balance");
   try {
     let formattedBalance = ethers.formatUnits(balance, decimals);
     return parseFloat(formattedBalance).toString();
@@ -68,6 +67,30 @@ function getThemeColors(theme: string): [string, string, string] {
   return themeColors[theme] || defaultColors;
 }
 
+async function getERC20TokenHistory(
+  address: `0x${string}`,
+  chainId: number,
+  page: number
+) {
+  let api = "";
+  if (page == 0) return;
+  if (chainId === 1) {
+    api = `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&page=${page}&offset=10&startblock=0&endblock=27025780&sort=desc&apikey=QSZE953N8GXZJB91HRXG6V4XKUMRKBNAP5`;
+  } else if (chainId === 11155111) {
+    api = `https://api-sepolia.etherscan.io/api?module=account&action=tokentx&address=${address}&page=${page}&offset=10&startblock=0&endblock=27025780&sort=desc&apikey=QSZE953N8GXZJB91HRXG6V4XKUMRKBNAP5`;
+  }
+  try {
+    const response = await fetch(api);
+    if (!response.ok) {
+      throw new Error(`API call failed with HTTP status ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching gas estimate:", error);
+    return null;
+  }
+}
 
 export {
   getThemeColors,
@@ -75,4 +98,5 @@ export {
   formatBalance,
   encodeMethodCall,
   trimAddress,
+  getERC20TokenHistory,
 };

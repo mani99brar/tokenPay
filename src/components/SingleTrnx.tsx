@@ -3,6 +3,9 @@ import { useWaitForTransactionReceipt, useAccount } from "wagmi";
 import { getTokenData } from "@/utils/getTokenData/readContract";
 import { formatBalance, trimAddress } from "@/utils/helpers/allHelpers";
 import { updateTrnxHash } from "@/utils/localStorage/readAndWrite";
+import TransactionDetails from "./TransactionDetails";
+import Loader from "./Loader";
+import ThemeWrapper from "./ThemeWrapper";
 interface TrnxHash {
   hash: `0x${string}`;
 }
@@ -29,47 +32,28 @@ const SingleTrnx = ({ hash }: TrnxHash) => {
     }
   }, [data, isError, isLoading]);
   return (
-    <div className="mb-4">
+    <div className="w-full">
       {data != undefined ? (
-        <div className="flex flex-col space-y-2">
-          <p className="lg">{spedUp && " This Transaction was sped up"}</p>
-          <p>
-            Token: <span className="font-bold">{token?.token?.symbol}</span>
-          </p>
-          <p>
-            Amount:{" "}
-            <span className="font-bold">
-              {formatBalance({
+        <ThemeWrapper size="fill">
+          <div className="flex w-full flex-col space-y-2">
+            <p className="lg">{spedUp && " This Transaction was sped up"}</p>
+            <TransactionDetails
+              hash={data.transactionHash}
+              symbol={token?.token?.symbol}
+              amount={formatBalance({
                 balance: BigInt(data.logs[0].data).toString(),
                 decimals: token?.token?.decimals,
               })}
-            </span>
-          </p>
-          <p>
-            Sender:{" "}
-            <span className="font-bold">
-              {trimAddress(`0x${data.logs[0].topics[1]?.slice(-40)}`)}
-            </span>
-          </p>
-          <p>
-            Receiver:{" "}
-            <span className="font-bold">
-              {trimAddress(`0x${data.logs[0].topics[2]?.slice(-40)}`)}
-            </span>
-          </p>
-          <a
-            href={
-              chain?.blockExplorers?.default.url +
-              "/tx/" +
-              data?.transactionHash
-            }
-            className="underline underline-offset-4"
-          >
-            View on block explorer
-          </a>
-        </div>
+              sender={trimAddress(`0x${data.logs[0].topics[1]?.slice(-40)}`)}
+              receiver={trimAddress(`0x${data.logs[0].topics[2]?.slice(-40)}`)}
+            />
+          </div>
+        </ThemeWrapper>
       ) : (
-        <p>{statusMessage}</p>
+        <>
+          {isError && <p>{statusMessage}</p>}
+          {isLoading && <Loader />}
+        </>
       )}
     </div>
   );

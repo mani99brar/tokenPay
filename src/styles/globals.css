@@ -29,3 +29,16 @@ color: white;
 background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 40%);
 color: black;
 }
+
+.spinner{
+  animation: spinner 2s linear 0s infinite forwards normal;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

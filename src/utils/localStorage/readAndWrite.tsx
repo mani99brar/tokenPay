@@ -1,17 +1,8 @@
 import { Transaction } from "@/types/blockchainData";
 
 function storeTransaction(transaction: Transaction) {
-  const existingTransactions: Transaction[] = JSON.parse(
-    localStorage.getItem("transactions") || "[]"
-  );
-  const transactionExists = existingTransactions.some(
-    (existingTransaction) => existingTransaction.hash === transaction.hash
-  );
-
-  if (!transactionExists) {
-    existingTransactions.push(transaction);
-    localStorage.setItem("transactions", JSON.stringify(existingTransactions));
-  }
+  const existingTransactions = [transaction];
+  localStorage.setItem("transactions", JSON.stringify(existingTransactions));
 }
 
 function updateTrnxHash(
@@ -62,7 +53,7 @@ function readTrnxHistory(chainId: number | undefined) {
       (trnx: Transaction) => trnx.chainId === chainId
     );
     if (filteredTransactions === undefined) return [];
-    return filteredTransactions;
+    return filteredTransactions.reverse();
   } else return [];
 }
 

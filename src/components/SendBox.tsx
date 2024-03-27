@@ -61,6 +61,7 @@ const SendBox = () => {
       setTrnxPrompt("Transaction failed: " + desError.shortMessage);
       setActiveTransaction(null);
     } else if (status === "success") {
+      if (!isTrnxActive) setIsTrnxActive(true);
       if (data == undefined || chainId == undefined) return;
       const transactionDetails = {
         hash: data,
@@ -163,11 +164,20 @@ const SendBox = () => {
                   {estimatedSeconds != 0
                     ? "Around " +
                       (estimatedSeconds > 60
-                        ? estimatedSeconds / 60 + " mins"
+                        ? (estimatedSeconds / 60).toFixed(0) + " mins"
                         : estimatedSeconds + " secs")
                     : "Calculating..."}
                 </span>
               </p>
+            </div>
+            <div className="sm:mt-2 lg:mt-0">
+              {activeTransaction != null && activeTransaction.isPending && (
+                <StandardButton
+                  prompt="Pending Trnx"
+                  size="small"
+                  handleClick={() => setIsTrnxActive(true)}
+                />
+              )}
             </div>
           </div>
         </ThemeWrapper>
