@@ -1,7 +1,8 @@
 type Transaction = {
-  hash: `0x${string}`;
-  isPending: boolean;
-  chainId: number;
+  hash: `0x${string}` | null;
+  isPending: boolean | null;
+  chainId: number | null;
+  isActive?: boolean;
 };
 
 type Token = {

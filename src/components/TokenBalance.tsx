@@ -45,7 +45,7 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   useEffect(() => {
     //Update the balance after each transaction
     refetch();
-  }, [activeTransaction]);
+  }, [activeTransaction?.hash]);
 
   useEffect(() => {
     if (selectedToken?.chainId != chainId) setSelectedToken(null);
@@ -56,7 +56,7 @@ const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
       try {
         if (balance != undefined)
           await navigator.clipboard.writeText(
-            scientificToDecimal(formattedBalance)
+            scientificToDecimal(parseFloat(formattedBalance))
           );
       } catch (err) {
         console.error("Failed to copy balance to clipboard", err);

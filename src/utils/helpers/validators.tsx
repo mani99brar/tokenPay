@@ -20,63 +20,29 @@ const useFormValidation = ({
   const [sendMessage, setSendMessage] = useState("Enter Inputs");
   const { address, chainId } = useAccount();
   const [encodedData, setEncodeData] = useState("");
-  const [estimatedSeconds, setEstimatedSeconds] = useState(0);
   const { data: userBalance } = useBalance({
     address,
   });
-  const { data: gasEstimateData, refetch: refetchGas } = useEstimateGas({
+  const {
+    data: gasEstimateData,
+    refetch: refetchGas,
+    isError: isErrorEstimateGas,
+  } = useEstimateGas({
     data: encodedData as `0x${string}`,
     to: selectedToken?.address as `0x${string}`,
   });
-  const { data: gasPrice, refetch: refetchGasPrice } = useGasPrice();
-
-  const fetchGasEstimate = async (chainId: number, gasPrice: bigint) => {
-    let apiUrl = "";
-
-    if (chainId === 1) {
-      apiUrl = `https://api.etherscan.io/api?module=gastracker&action=gasestimate&gasprice=${gasPrice.toString()}&apikey=QSZE953N8GXZJB91HRXG6V4XKUMRKBNAP5`;
-    } else {
-      apiUrl = "https://sepolia.beaconcha.in/api/v1/execution/gasnow";
-    }
-
-    try {
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        throw new Error(`API call failed with HTTP status ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching gas estimate:", error);
-      return null;
-    }
-  };
-
+  const {
+    data: gasPrice,
+    refetch: refetchGasPrice,
+    isError: isErrorGasPriceFetch,
+  } = useGasPrice();
+  console.log(gasPrice, gasEstimateData);
   useEffect(() => {
     if (chainId == undefined || gasPrice == undefined) return;
-    fetchGasEstimate(chainId, gasPrice).then((gasData) => {
-      if (gasData) {
-        if (chainId == 1) {
-          setEstimatedSeconds(gasData.result);
-        } else {
-          if (gasPrice >= gasData.data.rapid) {
-            setEstimatedSeconds(15);
-          } else if (gasPrice >= gasData.data.fast) {
-            setEstimatedSeconds(60);
-          } else if (gasPrice >= gasData.data.standard) {
-            setEstimatedSeconds(180);
-          } else if (gasPrice >= gasData.data.slow) {
-            setEstimatedSeconds(600);
-          }
-        }
-      }
-    });
     if (!selectedToken) {
       setSendMessage("Please Select Token");
       return;
     }
-
     if (
       tokenAmount &&
       selectedToken.userBalance !== undefined &&
@@ -130,14 +96,24 @@ const useFormValidation = ({
     gasPrice,
   ]);
 
+  useEffect(() => {
+    if (isErrorGasPriceFetch) {
+      refetchGasPrice();
+    }
+    if (isErrorEstimateGas) {
+      refetchGas();
+    }
+  }, [isErrorGasPriceFetch, isErrorEstimateGas]);
+
   return {
     isAmountValid,
     isReceiverValid,
     sendMessage,
     gasPrice,
-    estimatedSeconds,
     gasEstimateData,
   };
 };
 
 export default useFormValidation;
+
+

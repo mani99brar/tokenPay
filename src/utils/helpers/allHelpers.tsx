@@ -57,14 +57,14 @@ const trimAddress = (address: string) => {
   return `${start}....${end}`; // Combine them with ellipses in the middle
 };
 
-function getThemeColors(theme: string): [string, string, string] {
-  const themeColors: { [key: string]: [string, string, string] } = {
-    "Purple Hollow": ["#8612F1", "#fff", "purpleHollow"],
-    "White Hollow": ["#fff", "#8612F1", "whiteHollow"],
-    "White Solid": ["#fff", "#000", "whiteSolid"],
-    "Black Solid": ["#000", "#fff", "blackSolid"],
-  };
+export const themeColors: { [key: string]: [string, string, string] } = {
+  "Purple Hollow": ["#8612F1", "#fff", "purpleHollow"],
+  "White Hollow": ["#fff", "#8612F1", "whiteHollow"],
+  "White Solid": ["#fff", "#000", "whiteSolid"],
+  "Black Solid": ["#000", "#fff", "blackSolid"],
+};
 
+function getThemeColors(theme: string): [string, string, string] {
   const defaultColors: [string, string] = ["#000", "#FFF"];
 
   return themeColors[theme] || defaultColors;
@@ -125,6 +125,8 @@ function scientificToDecimal(num: number) {
 
   return sign < 0 ? "-" + decimalStr : decimalStr;
 }
+
+
 
 export {
   getThemeColors,

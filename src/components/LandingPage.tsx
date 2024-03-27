@@ -5,14 +5,11 @@ import NavBar from "@/components/NavBar";
 import { getThemeColors } from "@/utils/helpers/allHelpers";
 import { listenForMessages } from "@/utils/helpers/browserChannel";
 import { Message } from "@/types/localTypes";
-import { readTrnxHistory } from "@/utils/localStorage/readAndWrite";
-import { useAccount } from "wagmi";
 
 const LandingPage = () => {
   const { uiTheme, setAllUiTheme, setActiveTransaction } = useGlobalState();
   const [isMounted, setIsMounted] = useState(false);
   const [, , bgClass] = getThemeColors(uiTheme);
-  const { chainId } = useAccount();
   useEffect(() => {
     setIsMounted(true);
     const stopListening = listenForMessages((data: Message) => {
@@ -25,9 +22,10 @@ const LandingPage = () => {
         data.chainId
       )
         setActiveTransaction({
-          hash: data.hash,
+          hash: data.hash as `0x${string}`,
           isPending: data.isPending,
           chainId: data.chainId,
+          isActive: true,
         });
     });
     return () => stopListening();
@@ -36,8 +34,12 @@ const LandingPage = () => {
     <main
       className={`w-full flex flex-col items-center ${bgClass} min-h-screen`}
     >
-      <NavBar />
-      {isMounted && <Dashboard />}
+      {isMounted && (
+        <>
+          <NavBar />
+          <Dashboard />
+        </>
+      )}
     </main>
   );
 };

@@ -1,37 +1,23 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { readTheme, storeOrUpdateTheme } from "./localStorage/readAndWrite";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import { Token, Transaction } from "@/types/blockchainData";
 interface GlobalContextType {
-  selectedToken: token | null;
-  setSelectedToken: (token: token | null) => void;
+  selectedToken: Token | null;
+  setSelectedToken: (token: Token | null) => void;
   setSelectedTokenBalance: (balance: string) => void;
   activeTransaction: Transaction | null;
   setActiveTransaction: (transaction: Transaction | null) => void;
   uiTheme: string;
   setAllUiTheme: (theme: string) => void;
-  updateActiveTransactionState: () => void;
-}
-
-interface token {
-  name: string;
-  symbol: string;
-  decimals: number;
-  image?: string;
-  chainId: number;
-  address: string;
-  userBalance?: string;
-}
-
-interface Transaction {
-  hash: string;
-  isPending: boolean;
-  chainId: number;
+  updateActiveTransactionStatus: () => void;
+  setActiveTransactionState: (state: boolean) => void;
 }
 
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 export const GlobalStateProvider: React.FC<any> = ({ children }) => {
-  const [selectedToken, setSelectedToken] = useState<token | null>(null);
+  const [selectedToken, setSelectedToken] = useState<Token | null>(null);
   const [activeTransaction, setActiveTransaction] =
     useState<Transaction | null>(null);
 
@@ -52,7 +38,7 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
     });
   };
 
-  const updateActiveTransactionState = () => {
+  const updateActiveTransactionStatus = () => {
     setActiveTransaction((prevTransaction) => {
       if (!prevTransaction) {
         return null;
@@ -69,6 +55,18 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
     setUiTheme(theme);
   };
 
+  const setActiveTransactionState = (state: boolean) => {
+    setActiveTransaction((prevTransaction) => {
+      if (!prevTransaction) {
+        return { hash: null, chainId: null, isPending: true, isActive: state };
+      }
+      return {
+        ...prevTransaction,
+        isActive: state,
+      };
+    });
+  };
+
   const value = {
     selectedToken,
     setSelectedToken,
@@ -77,7 +75,8 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
     setActiveTransaction,
     uiTheme,
     setAllUiTheme,
-    updateActiveTransactionState,
+    updateActiveTransactionStatus,
+    setActiveTransactionState,
   };
 
   return (
