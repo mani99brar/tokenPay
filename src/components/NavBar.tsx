@@ -28,7 +28,7 @@ const NavBar = () => {
 
         {changeTheme && (
           <PopUp prompt="Select a Theme" setValue={setChangeTheme}>
-            <ThemeSelector />
+            <ThemeSelector setChangeTheme={setChangeTheme} />
           </PopUp>
         )}
       </div>
