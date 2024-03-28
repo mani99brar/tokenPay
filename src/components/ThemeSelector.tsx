@@ -2,11 +2,16 @@ import { themeColors } from "@/utils/helpers/commonHelpers";
 import { useGlobalState } from "@/utils/StateContext";
 import { broadcastMessage } from "@/utils/helpers/browserChannel";
 
-const ThemeSelector = () => {
+interface ThemeSelector {
+  setChangeTheme: (theme: boolean) => void;
+}
+
+const ThemeSelector = ({ setChangeTheme }: ThemeSelector) => {
   const { uiTheme, setAllUiTheme } = useGlobalState();
   function handleThemeChange(theme: string) {
     broadcastMessage({ type: "theme", theme: theme });
     setAllUiTheme(theme);
+    setChangeTheme(false);
   }
   return (
     <div className="w-full h-full bg-white rounded-lg flex flex-col p-4 space-y-4">
