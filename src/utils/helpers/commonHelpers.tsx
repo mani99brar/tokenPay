@@ -6,6 +6,20 @@ interface Balance {
   decimals: number | undefined;
 }
 
+interface MethodCall {
+  receiverAddress: string;
+  amount: string;
+}
+
+export const themeColors: { [key: string]: [string, string, string] } = {
+  "Purple Hollow": ["#8612F1", "#fff", "purpleHollow"],
+  "White Hollow": ["#fff", "#8612F1", "whiteHollow"],
+  "White Solid": ["#fff", "#000", "whiteSolid"],
+  "Black Solid": ["#000", "#fff", "blackSolid"],
+};
+
+const ETHERSCAN_API_KEY = process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY;
+
 function formatBalance({ balance, decimals }: Balance) {
   if (decimals === undefined || balance === undefined || balance == "")
     return "";
@@ -38,11 +52,6 @@ function parseTokenAmount(
   }
 }
 
-interface MethodCall {
-  receiverAddress: string;
-  amount: string;
-}
-
 function encodeMethodCall({ receiverAddress, amount }: MethodCall) {
   if (amount === "") return "";
   if (!ethers.isAddress(receiverAddress)) return "";
@@ -59,13 +68,6 @@ const trimAddress = (address: string) => {
   return `${start}....${end}`; // Combine them with ellipses in the middle
 };
 
-export const themeColors: { [key: string]: [string, string, string] } = {
-  "Purple Hollow": ["#8612F1", "#fff", "purpleHollow"],
-  "White Hollow": ["#fff", "#8612F1", "whiteHollow"],
-  "White Solid": ["#fff", "#000", "whiteSolid"],
-  "Black Solid": ["#000", "#fff", "blackSolid"],
-};
-
 function getThemeColors(theme: string): [string, string, string] {
   const defaultColors: [string, string] = ["#000", "#FFF"];
 
@@ -80,9 +82,9 @@ async function getERC20TokenHistory(
   let api = "";
   if (page == 0) return;
   if (chainId === 1) {
-    api = `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&page=${page}&offset=10&startblock=0&endblock=27025780&sort=desc&apikey=QSZE953N8GXZJB91HRXG6V4XKUMRKBNAP5`;
+    api = `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&page=${page}&offset=10&startblock=0&endblock=27025780&sort=desc&apikey=${ETHERSCAN_API_KEY}`;
   } else if (chainId === 11155111) {
-    api = `https://api-sepolia.etherscan.io/api?module=account&action=tokentx&address=${address}&page=${page}&offset=10&startblock=0&endblock=27025780&sort=desc&apikey=QSZE953N8GXZJB91HRXG6V4XKUMRKBNAP5`;
+    api = `https://api-sepolia.etherscan.io/api?module=account&action=tokentx&address=${address}&page=${page}&offset=10&startblock=0&endblock=27025780&sort=desc&apikey=${ETHERSCAN_API_KEY}`;
   }
   try {
     const response = await fetch(api);

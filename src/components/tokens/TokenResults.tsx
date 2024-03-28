@@ -1,12 +1,12 @@
 // Desc: TokenResults component that displays token search results
-import tokens from "@/utils/tokenData.json";
-import { getTokenData } from "@/utils/getTokenData/readContract";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
+import { ethers } from "ethers";
+import tokens from "@/utils/tokenData.json";
+import { getTokenData } from "@/utils/getTokenData/readContract";
 import { useGlobalState } from "@/utils/StateContext";
 import ThemeWrapper from "../layout/ThemeWrapper";
 import Loader from "../common/Loader";
-import { ethers } from "ethers";
 import { Token } from "@/types/blockchainData";
 
 interface TokenResultsProps {

@@ -2,15 +2,15 @@
 // for the selected chain in wallet
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import PopUp from "../PopUp";
-import StandardButton from "../common/StandardButton";
-import ThemeWrapper from "../layout/ThemeWrapper";
-import TransactionDetails from "./TransactionDetails";
 import {
   formatBalance,
   trimAddress,
   getERC20TokenHistory,
 } from "@/utils/helpers/commonHelpers";
+import PopUp from "../PopUp";
+import StandardButton from "../common/StandardButton";
+import ThemeWrapper from "../layout/ThemeWrapper";
+import TransactionDetails from "./TransactionDetails";
 import Loader from "../common/Loader";
 interface Transaction {
   hash: string;

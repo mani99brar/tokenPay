@@ -6,6 +6,8 @@ interface EstimatedTime {
   gasPrice: bigint | undefined;
 }
 
+const ETHERSCAN_API_KEY = process.env.NEXT_PUBLIC_ETHERSCAN_API_KEY;
+
 const useEstimateTime = ({ chainId, gasPrice }: EstimatedTime) => {
   const [estimatedTime, setEstimatedTime] = useState<number>(0);
 
@@ -13,7 +15,7 @@ const useEstimateTime = ({ chainId, gasPrice }: EstimatedTime) => {
     let apiUrl = "";
 
     if (chainId === 1) {
-      apiUrl = `https://api.etherscan.io/api?module=gastracker&action=gasestimate&gasprice=${gasPrice.toString()}&apikey=QSZE953N8GXZJB91HRXG6V4XKUMRKBNAP5`;
+      apiUrl = `https://api.etherscan.io/api?module=gastracker&action=gasestimate&gasprice=${gasPrice.toString()}&apikey=${ETHERSCAN_API_KEY}`;
     } else {
       apiUrl = "https://sepolia.beaconcha.in/api/v1/execution/gasnow";
     }

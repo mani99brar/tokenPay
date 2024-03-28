@@ -1,12 +1,12 @@
 // Desc: Listen for messages from the background script and update the UI accordingly
 // Loading the app after mount to avoid hydration issues
-import Dashboard from "@/components/Dashboard";
 import { useState, useEffect } from "react";
 import { useGlobalState } from "@/utils/StateContext";
-import NavBar from "@/components/layout/NavBar";
 import { getThemeColors } from "@/utils/helpers/commonHelpers";
 import { listenForMessages } from "@/utils/helpers/browserChannel";
 import { Message } from "@/types/localTypes";
+import Dashboard from "@/components/Dashboard";
+import NavBar from "@/components/layout/NavBar";
 
 const LandingPage = () => {
   const { uiTheme, setAllUiTheme, setActiveTransaction } = useGlobalState();

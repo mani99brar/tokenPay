@@ -1,7 +1,7 @@
 // Desc: ChainSelect component that displays chain selection dropdown
-import { useGlobalState } from "@/utils/StateContext";
 import { useSwitchChain, useAccount } from "wagmi";
 import { getThemeColors } from "@/utils/helpers/commonHelpers";
+import { useGlobalState } from "@/utils/StateContext";
 
 const ChainSelect = () => {
   const { chains, switchChain, isPending } = useSwitchChain();
