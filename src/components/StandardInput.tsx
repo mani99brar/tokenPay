@@ -29,8 +29,6 @@ const StandardInput = ({
       {/* Prevent default paste behaviour of input */}
       <style jsx>{`
         input::-selection {
-          background-color: ${bgColor};
-          color: ${textColor};
           input:-webkit-autofill,
           input:-webkit-autofill:hover,
           input:-webkit-autofill:focus,
@@ -43,7 +41,8 @@ const StandardInput = ({
         }
       `}</style>
       <input
-        className={`placeholder-inherit w-full outline-none font-bold bg-[${bgColor}]`}
+        style={{ backgroundColor: bgColor }}
+        className={`placeholder-inherit w-full outline-none font-bold`}
         type={type}
         placeholder={placeholder}
         value={value}
