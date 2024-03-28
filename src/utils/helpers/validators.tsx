@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Token } from "@/types/blockchainData";
 import { useEstimateGas, useGasPrice, useBalance, useAccount } from "wagmi";
-import { parseTokenAmount } from "@/utils/helpers/allHelpers";
-import { encodeMethodCall } from "@/utils/helpers/allHelpers";
+import {
+  parseTokenAmount,
+  encodeMethodCall,
+} from "@/utils/helpers/commonHelpers";
+
 interface FormValidationArgs {
   selectedToken: Token | null;
   tokenAmount: string;

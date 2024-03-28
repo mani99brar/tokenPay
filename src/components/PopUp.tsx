@@ -1,5 +1,5 @@
 import { useGlobalState } from "@/utils/StateContext";
-import { getThemeColors } from "@/utils/helpers/allHelpers";
+import { getThemeColors } from "@/utils/helpers/commonHelpers";
 interface PopUpProps {
   setValue: (value: boolean) => void;
   prompt: string;
@@ -30,7 +30,7 @@ const PopUp: React.FC<PopUpProps> = ({ setValue, prompt, children }) => {
           {children}
         </div>
       </div>
-      <div className="bg-[#000] h-full w-full opacity-60 top-0 left-0 absolute z-0"></div>
+      <div className="bg-[#000] h-full w-full opacity-70 top-0 left-0 absolute z-0"></div>
     </div>
   );
 };

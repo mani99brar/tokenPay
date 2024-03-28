@@ -2,11 +2,11 @@ import ThemeWrapper from "./ThemeWrapper";
 import StandardButton from "./StandardButton";
 import StandardInput from "./StandardInput";
 import { useWriteContract, BaseErrorType, useAccount } from "wagmi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import useFormValidation from "@/utils/helpers/validators";
 import { useGlobalState } from "@/utils/StateContext";
 import abi from "@/utils/abi/ERC20.json";
-import { parseTokenAmount } from "@/utils/helpers/allHelpers";
+import { parseTokenAmount } from "@/utils/helpers/commonHelpers";
 import TokenActions from "./TokenActions";
 import TransactionStatus from "./TransactionStatus";
 import { broadcastMessage } from "@/utils/helpers/browserChannel";
@@ -15,6 +15,8 @@ import { storeTransaction } from "@/utils/localStorage/readAndWrite";
 interface TokenFormProps {
   setGasPrice: (price: bigint) => void;
 }
+
+const TokenActionsMemoized = memo(TokenActions);
 
 const TokenForm = ({ setGasPrice }: TokenFormProps) => {
   const [tokenAmount, setTokenAmount] = useState<string>("");
@@ -71,7 +73,6 @@ const TokenForm = ({ setGasPrice }: TokenFormProps) => {
         isPending: true,
         chainId,
       };
-      //Make types same
       setActiveTransaction({
         hash: data as `0x${string}`,
         isPending: true,
@@ -112,7 +113,7 @@ const TokenForm = ({ setGasPrice }: TokenFormProps) => {
               min={0}
             />
           </div>
-          <TokenActions />
+          <TokenActionsMemoized />
         </>
       </ThemeWrapper>
       <ThemeWrapper>

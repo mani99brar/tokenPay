@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
-import SingleTrnx from "./SingleTrnx";
 import PopUp from "./PopUp";
 import StandardButton from "./StandardButton";
 import ThemeWrapper from "./ThemeWrapper";
 import TransactionDetails from "./TransactionDetails";
-import { getERC20TokenHistory } from "@/utils/helpers/allHelpers";
-import { formatBalance, trimAddress } from "@/utils/helpers/allHelpers";
+import {
+  formatBalance,
+  trimAddress,
+  getERC20TokenHistory,
+} from "@/utils/helpers/commonHelpers";
 import Loader from "./Loader";
 interface Transaction {
   hash: string;

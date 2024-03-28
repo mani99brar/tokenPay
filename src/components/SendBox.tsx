@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import { useGlobalState } from "@/utils/StateContext";
-import { getThemeColors } from "@/utils/helpers/allHelpers";
+import { getThemeColors } from "@/utils/helpers/commonHelpers";
 import { useAccount } from "wagmi";
 import { readTrnxHistory } from "@/utils/localStorage/readAndWrite";
 import TokenForm from "./TokenForm";
 import useEstimateTime from "@/utils/helpers/gasEstimate";
 import Stats from "./Stats";
 const SendBox = () => {
-  const { activeTransaction, setActiveTransaction, uiTheme } = useGlobalState();
+  const { setActiveTransaction, uiTheme } = useGlobalState();
   const [, bgColor] = getThemeColors(uiTheme);
   const { chainId } = useAccount();
   const [gasPrice, setGasPrice] = useState<bigint | undefined>(undefined);
   const { estimatedTime } = useEstimateTime({ gasPrice, chainId });
-  console.log(gasPrice, estimatedTime);
   useEffect(() => {
     const existingTransactions = readTrnxHistory(chainId);
     if (existingTransactions.length > 0) {

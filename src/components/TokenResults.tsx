@@ -6,14 +6,7 @@ import { useGlobalState } from "@/utils/StateContext";
 import ThemeWrapper from "./ThemeWrapper";
 import Loader from "./Loader";
 import { ethers } from "ethers";
-type TokenData = {
-  address: string;
-  name: string;
-  symbol: string;
-  decimals: number;
-  logoURI?: string;
-  balance?: string;
-};
+import { Token } from "@/types/blockchainData";
 
 interface TokenResultsProps {
   searchQuery: string;
@@ -23,7 +16,7 @@ interface TokenResultsProps {
 const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
   const { address, chainId } = useAccount();
   const { selectedToken, setSelectedToken } = useGlobalState();
-  const [tokenList, setTokenList] = useState<TokenData[]>([]);
+  const [tokenList, setTokenList] = useState<Token[]>([]);
   const [load, setLoad] = useState<boolean>(false);
   const fetchData = getTokenData(searchQuery, address);
 
@@ -60,7 +53,7 @@ const TokenResults = ({ searchQuery, setSearch }: TokenResultsProps) => {
     }
   }, [fetchData?.isRefetching]);
 
-  const handleTokenSelect = (token: TokenData) => {
+  const handleTokenSelect = (token: Token) => {
     if (chainId == undefined) return;
     if (selectedToken?.address == token.address) {
       setSearch(false);

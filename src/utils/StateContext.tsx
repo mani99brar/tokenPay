@@ -87,7 +87,7 @@ export const GlobalStateProvider: React.FC<any> = ({ children }) => {
 export const useGlobalState = () => {
   const context = useContext(GlobalContext);
   if (context === undefined) {
-    throw new Error("useWinner must be used within a WinnerProvider");
+    throw new Error("useWinner must be used within a GlobalStateProvider");
   }
   return context;
 };

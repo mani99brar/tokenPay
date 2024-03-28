@@ -2,22 +2,18 @@ import { getTokenBalance } from "@/utils/getTokenData/readContract";
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
 import { useGlobalState } from "@/utils/StateContext";
-import { formatBalance, scientificToDecimal } from "@/utils/helpers/allHelpers";
+import {
+  formatBalance,
+  scientificToDecimal,
+} from "@/utils/helpers/commonHelpers";
 import { faCopy } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { TokenBalanceReturn } from "@/types/blockchainData";
 
 interface TokenBalanceProps {
   tokenAddress: string;
 }
-interface TokenBalanceReturn {
-  balance:
-    | { decimals: number; formatted: string; symbol: string; value: bigint }
-    | undefined;
-  isFetching: boolean;
-  refetch: () => void;
-  isRefetching: boolean;
-}
+
 
 const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   const { address, chainId } = useAccount();

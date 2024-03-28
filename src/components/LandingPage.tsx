@@ -2,7 +2,7 @@ import Dashboard from "@/components/Dashboard";
 import { useState, useEffect } from "react";
 import { useGlobalState } from "@/utils/StateContext";
 import NavBar from "@/components/NavBar";
-import { getThemeColors } from "@/utils/helpers/allHelpers";
+import { getThemeColors } from "@/utils/helpers/commonHelpers";
 import { listenForMessages } from "@/utils/helpers/browserChannel";
 import { Message } from "@/types/localTypes";
 

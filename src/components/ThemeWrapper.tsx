@@ -1,5 +1,5 @@
 import { useGlobalState } from "@/utils/StateContext";
-import { getThemeColors } from "@/utils/helpers/allHelpers";
+import { getThemeColors } from "@/utils/helpers/commonHelpers";
 
 interface ThemeWrapperProps {
   children: React.ReactNode;

@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useWaitForTransactionReceipt, useAccount } from "wagmi";
-import SingleTrnx from "./SingleTrnx";
 import PopUp from "./PopUp";
 import { updateTrnxLocalStatus } from "@/utils/localStorage/readAndWrite";
 import ThemeWrapper from "./ThemeWrapper";
 import { useGlobalState } from "@/utils/StateContext";
-
+import TransactionDetails from "./TransactionDetails";
+import { getTokenData } from "@/utils/getTokenData/readContract";
+import { formatBalance, trimAddress } from "@/utils/helpers/commonHelpers";
+import Loader from "./Loader";
 interface TransactionProps {
   transactionHash: `0x${string}` | undefined;
   trnxPrompt: string;
@@ -23,6 +25,8 @@ const TransactionStatus = ({
   );
   const { updateActiveTransactionStatus, setActiveTransactionState } =
     useGlobalState();
+  const { address } = useAccount();
+  const token = getTokenData(data?.to as string, address);
 
   useEffect(() => {
     if (isLoading) {
@@ -30,6 +34,7 @@ const TransactionStatus = ({
     } else if (isError) {
       setStatusMessage("Transaction failed.");
     } else if (data) {
+      console.log(data, "Data");
       if (transactionHash && data.status === "success") {
         updateActiveTransactionStatus();
         updateTrnxLocalStatus(transactionHash, false);
@@ -43,24 +48,49 @@ const TransactionStatus = ({
       setValue={() => setActiveTransactionState(false)}
     >
       <div className="w-full h-full flex flex-col p-4">
-        {trnxPrompt != "" ? (
-          <div className="h-full flex w-full flex-col space-y-4 items-center">
-            <ThemeWrapper size="fill">
-              <p className="h-full rounded-lg text-2xl font-bold">
+        <ThemeWrapper size="fill">
+          {trnxPrompt != "" ? (
+            <div className="h-full flex w-full flex-col space-y-4 items-center">
+              <p className="h-full w-full rounded-lg text-xl font-bold">
                 {trnxPrompt}
               </p>
-            </ThemeWrapper>
-          </div>
-        ) : (
-          <ThemeWrapper size="fill">
-            <div className="flex flex-col w-full space-y-4">
-              <p className="text-2xl font-bold">{statusMessage}</p>
-              {transactionHash != undefined && (
-                <SingleTrnx hash={transactionHash} />
-              )}
             </div>
-          </ThemeWrapper>
-        )}
+          ) : (
+            <div className="flex flex-col w-full space-y-4">
+              <p className="text-xl font-bold">{statusMessage}</p>
+
+              {transactionHash != undefined &&
+                (data != undefined ? (
+                  data?.logs.length != 0 ? (
+                    <ThemeWrapper size="fill">
+                      <TransactionDetails
+                        hash={data.transactionHash}
+                        symbol={token?.token?.symbol}
+                        amount={formatBalance({
+                          balance: BigInt(data.logs[0].data).toString(),
+                          decimals: token?.token?.decimals,
+                        })}
+                        sender={trimAddress(
+                          `0x${data.logs[0].topics[1]?.slice(-40)}`
+                        )}
+                        receiver={trimAddress(
+                          `0x${data.logs[0].topics[2]?.slice(-40)}`
+                        )}
+                      />
+                    </ThemeWrapper>
+                  ) : (
+                    <ThemeWrapper size="fill">
+                      <p>Token payment was cancelled.</p>
+                    </ThemeWrapper>
+                  )
+                ) : (
+                  <div className="w-full h-full">
+                    <Loader />
+                  </div>
+                ))}
+            </div>
+          )}
+        </ThemeWrapper>
       </div>
     </PopUp>
   );

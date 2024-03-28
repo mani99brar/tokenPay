@@ -1,4 +1,4 @@
-import { themeColors } from "@/utils/helpers/allHelpers";
+import { themeColors } from "@/utils/helpers/commonHelpers";
 import { useGlobalState } from "@/utils/StateContext";
 import { broadcastMessage } from "@/utils/helpers/browserChannel";
 

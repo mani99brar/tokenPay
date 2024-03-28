@@ -15,5 +15,13 @@ type Token = {
   userBalance?: string;
 };
 
+type TokenBalanceReturn = {
+  balance:
+    | { decimals: number; formatted: string; symbol: string; value: bigint }
+    | undefined;
+  isFetching: boolean;
+  refetch: () => void;
+  isRefetching: boolean;
+};
 
-export type { Transaction, Token };
+export type { Transaction, Token, TokenBalanceReturn };

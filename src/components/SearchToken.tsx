@@ -1,5 +1,5 @@
 import StandardInput from "./StandardInput";
-import { useState } from "react";
+import { useState, memo } from "react";
 import TokenResults from "./TokenResults";
 import PopUp from "./PopUp";
 import ThemeWrapper from "./ThemeWrapper";
@@ -10,6 +10,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 interface SearchTokenProps {
   setSearch: (search: boolean) => void;
 }
+const ChainSelectMemoized = memo(ChainSelect);
 
 const SearchToken = ({ setSearch }: SearchTokenProps) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -30,7 +31,7 @@ const SearchToken = ({ setSearch }: SearchTokenProps) => {
             />
           </div>
           <div className="sm:w-2/5 w-full">
-            <ChainSelect />
+            <ChainSelectMemoized />
           </div>
         </div>
       </ThemeWrapper>

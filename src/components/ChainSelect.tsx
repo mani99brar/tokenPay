@@ -1,6 +1,6 @@
 import { useGlobalState } from "@/utils/StateContext";
 import { useSwitchChain, useAccount } from "wagmi";
-import { getThemeColors } from "@/utils/helpers/allHelpers";
+import { getThemeColors } from "@/utils/helpers/commonHelpers";
 
 const ChainSelect = () => {
   const { chains, switchChain, isPending } = useSwitchChain();
