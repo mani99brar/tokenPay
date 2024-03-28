@@ -104,62 +104,6 @@
       "address": "0x3e622317f8C93f7328350cF0B56d9eD4C620C5d6",
       "chainId": 11155111,
       "decimals": 18
-    },
-    {
-      "name": "Aave",
-      "symbol": "AAVE",
-      "address": "0xBA12222222228d8Ba445958a75a0704d566BF2C8",
-      "chainId": 11155111,
-      "decimals": 18
-    },
-    {
-      "name": "Ethereum",
-      "symbol": "ETH",
-      "address": "0x0",
-      "chainId": 10,
-      "decimals": 18
-    },
-    {
-      "name": "Chainlink",
-      "symbol": "LINK",
-      "address": "0x350a791Bfc2C21F9Ed5d10980Dad2e2638ffa7f6",
-      "chainId": 10,
-      "decimals": 18
-    },
-    {
-      "name": "USD Coin",
-      "symbol": "USDC",
-      "address": "0x7F5c764cbc14f9669B88837ca1490cCa17c31607",
-      "chainId": 10,
-      "decimals": 6
-    },
-    {
-      "name": "Tether",
-      "symbol": "USDT",
-      "address": "0x94b008aA00579c1307B0EF2c499aD98a8ce58e58",
-      "chainId": 10,
-      "decimals": 6
-    },
-    {
-      "name": "Wrapped Bitcoin",
-      "symbol": "WBTC",
-      "address": "0x68f180fcCe6836688e9084f035309E29Bf0A2095",
-      "chainId": 10,
-      "decimals": 8
-    },
-    {
-      "name": "Dai",
-      "symbol": "DAI",
-      "address": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1",
-      "chainId": 10,
-      "decimals": 18
-    },
-    {
-      "name": "Aave",
-      "symbol": "AAVE",
-      "address": "0x76FB31fb4af56892A25e32cFC43De717950c9278",
-      "chainId": 10,
-      "decimals": 18
     }
   ]
 }
