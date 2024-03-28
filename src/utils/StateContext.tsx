@@ -1,6 +1,6 @@
+// Desc: Global context for state management for transaction and token selection
 import { createContext, useContext, useState, useEffect } from "react";
 import { readTheme, storeOrUpdateTheme } from "./localStorage/readAndWrite";
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Token, Transaction } from "@/types/blockchainData";
 interface GlobalContextType {
   selectedToken: Token | null;

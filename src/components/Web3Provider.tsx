@@ -1,8 +1,9 @@
+// Web3Provider is a custom component that wraps the entire application with the necessary
+// context providers for the wagmi and connectkit libraries.
 import { WagmiProvider, createConfig, http } from "wagmi";
 import { sepolia, mainnet } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
-
 
 const walletConnectProjectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_ID;
 const sepoliaRpc = process.env.NEXT_PUBLIC_SEPOLIA_RPC;

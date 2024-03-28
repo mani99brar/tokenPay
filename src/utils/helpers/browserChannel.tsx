@@ -1,4 +1,4 @@
-// broadcastMessage.js
+// Desc: Browser channel utility functions
 import { Message } from "@/types/localTypes";
 
 const CHANNEL_NAME = "tokenPay";

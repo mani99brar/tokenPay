@@ -1,7 +1,9 @@
-import ThemeWrapper from "./ThemeWrapper";
-import StandardButton from "./StandardButton";
+// Desc: This component is responsible for displaying the gas price and estimated time for the transaction to be mined.
+// It also displays the pending transaction button and history button.
+import ThemeWrapper from "./layout/ThemeWrapper";
+import StandardButton from "./common/StandardButton";
 import { useState } from "react";
-import HistoryTrnx from "./HistoryTrnx";
+import HistoryTrnx from "./transaction/HistoryTrnx";
 import { useGlobalState } from "@/utils/StateContext";
 
 interface StatsProps {

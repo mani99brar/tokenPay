@@ -1,3 +1,4 @@
+// Desc: Dashboard component for account connection management
 import { useAccount } from "wagmi";
 import SendBox from "@/components/SendBox";
 

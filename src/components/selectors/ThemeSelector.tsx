@@ -1,3 +1,4 @@
+// Desc: Theme selector component for changing the theme
 import { themeColors } from "@/utils/helpers/commonHelpers";
 import { useGlobalState } from "@/utils/StateContext";
 import { broadcastMessage } from "@/utils/helpers/browserChannel";

@@ -1,3 +1,4 @@
+// Desc: TokenActions component where the user can search for tokens and view their balances
 import SearchToken from "./SearchToken";
 import TokenBalance from "./TokenBalance";
 import { useState } from "react";
@@ -5,7 +6,6 @@ import { useGlobalState } from "@/utils/StateContext";
 import { getThemeColors } from "@/utils/helpers/commonHelpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretSquareDown } from "@fortawesome/free-solid-svg-icons";
-
 
 const TokenActions = () => {
   const [search, setSearch] = useState<boolean>(false);

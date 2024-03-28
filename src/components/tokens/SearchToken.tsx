@@ -1,9 +1,10 @@
-import StandardInput from "./StandardInput";
+// Desc: Search token component
+import StandardInput from "../common/StandardInput";
 import { useState, memo } from "react";
 import TokenResults from "./TokenResults";
-import PopUp from "./PopUp";
-import ThemeWrapper from "./ThemeWrapper";
-import ChainSelect from "./ChainSelect";
+import PopUp from "../PopUp";
+import ThemeWrapper from "../layout/ThemeWrapper";
+import ChainSelect from "../selectors/ChainSelect";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 

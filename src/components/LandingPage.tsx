@@ -1,7 +1,9 @@
+// Desc: Listen for messages from the background script and update the UI accordingly
+// Loading the app after mount to avoid hydration issues
 import Dashboard from "@/components/Dashboard";
 import { useState, useEffect } from "react";
 import { useGlobalState } from "@/utils/StateContext";
-import NavBar from "@/components/NavBar";
+import NavBar from "@/components/layout/NavBar";
 import { getThemeColors } from "@/utils/helpers/commonHelpers";
 import { listenForMessages } from "@/utils/helpers/browserChannel";
 import { Message } from "@/types/localTypes";
@@ -13,7 +15,6 @@ const LandingPage = () => {
   useEffect(() => {
     setIsMounted(true);
     const stopListening = listenForMessages((data: Message) => {
-      console.log(data);
       if (data.type === "theme" && data.theme) setAllUiTheme(data.theme);
       else if (
         data.type === "transaction" &&

@@ -1,3 +1,4 @@
+// Desc: Standard input component
 import { useGlobalState } from "@/utils/StateContext";
 import { getThemeColors } from "@/utils/helpers/commonHelpers";
 interface StandardInputProps {

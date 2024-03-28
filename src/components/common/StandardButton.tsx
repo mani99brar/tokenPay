@@ -1,3 +1,4 @@
+// Desc: Standard button component
 import { useGlobalState } from "@/utils/StateContext";
 import { getThemeColors } from "@/utils/helpers/commonHelpers";
 interface StandardButtonProps {

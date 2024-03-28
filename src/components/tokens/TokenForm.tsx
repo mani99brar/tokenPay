@@ -1,6 +1,7 @@
-import ThemeWrapper from "./ThemeWrapper";
-import StandardButton from "./StandardButton";
-import StandardInput from "./StandardInput";
+// Desc: The TokenForm component is used to send tokens to a receiver address.
+import ThemeWrapper from "../layout/ThemeWrapper";
+import StandardButton from "../common/StandardButton";
+import StandardInput from "../common/StandardInput";
 import { useWriteContract, BaseErrorType, useAccount } from "wagmi";
 import { useState, useEffect, memo } from "react";
 import useFormValidation from "@/utils/helpers/validators";
@@ -8,7 +9,7 @@ import { useGlobalState } from "@/utils/StateContext";
 import abi from "@/utils/abi/ERC20.json";
 import { parseTokenAmount } from "@/utils/helpers/commonHelpers";
 import TokenActions from "./TokenActions";
-import TransactionStatus from "./TransactionStatus";
+import TransactionStatus from "../transaction/TransactionStatus";
 import { broadcastMessage } from "@/utils/helpers/browserChannel";
 import { storeTransaction } from "@/utils/localStorage/readAndWrite";
 
@@ -60,9 +61,7 @@ const TokenForm = ({ setGasPrice }: TokenFormProps) => {
       setActiveTransactionState(true);
       setTrnxPrompt("Confirm transaction in your wallet");
     } else if (status === "error") {
-      console.log(error);
       const desError = { error }.error?.cause as BaseErrorType;
-      console.log(desError.shortMessage);
       setTrnxPrompt("Transaction failed: " + desError.shortMessage);
       setActiveTransaction(null);
     } else if (status === "success") {

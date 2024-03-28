@@ -1,3 +1,4 @@
+// Desc: Loader component that displays a spinner
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

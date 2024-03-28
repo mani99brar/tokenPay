@@ -1,3 +1,4 @@
+// Desc: This file contains the component that displays the balance of the selected token
 import { getTokenBalance } from "@/utils/getTokenData/readContract";
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
@@ -13,7 +14,6 @@ import { TokenBalanceReturn } from "@/types/blockchainData";
 interface TokenBalanceProps {
   tokenAddress: string;
 }
-
 
 const TokenBalance = ({ tokenAddress }: TokenBalanceProps) => {
   const { address, chainId } = useAccount();

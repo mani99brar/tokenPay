@@ -1,3 +1,4 @@
+// Desc: Hook to estimate the time for a transaction to be mined
 import { useEffect, useState } from "react";
 
 interface EstimatedTime {

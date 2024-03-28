@@ -1,3 +1,4 @@
+// Desc: Wrapper component for the theme
 import { useGlobalState } from "@/utils/StateContext";
 import { getThemeColors } from "@/utils/helpers/commonHelpers";
 

@@ -1,3 +1,4 @@
+// Desc: Utility functions for reading and writing to local storage
 import { Transaction } from "@/types/blockchainData";
 
 function storeTransaction(transaction: Transaction) {

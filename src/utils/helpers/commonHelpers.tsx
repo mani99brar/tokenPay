@@ -1,3 +1,5 @@
+// Desc: Common helper functions used across the app
+
 const ethers = require("ethers");
 interface Balance {
   balance: string | undefined;
@@ -125,8 +127,6 @@ function scientificToDecimal(num: number) {
 
   return sign < 0 ? "-" + decimalStr : decimalStr;
 }
-
-
 
 export {
   getThemeColors,

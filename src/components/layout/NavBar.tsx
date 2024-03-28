@@ -1,9 +1,10 @@
-import React from "react";
+// Desc: This file contains the NavBar component which is used to display the top
+// theme and connect button.
 import { ConnectKitButton } from "connectkit";
-import StandardButton from "./StandardButton";
+import StandardButton from "../common/StandardButton";
 import { useState } from "react";
-import PopUp from "./PopUp";
-import ThemeSelector from "./ThemeSelector";
+import PopUp from "../PopUp";
+import ThemeSelector from "../selectors/ThemeSelector";
 
 const NavBar = () => {
   const [changeTheme, setChangeTheme] = useState(false);

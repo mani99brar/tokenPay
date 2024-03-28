@@ -1,3 +1,4 @@
+// Desc: Form validation hook
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Token } from "@/types/blockchainData";
@@ -39,7 +40,6 @@ const useFormValidation = ({
     refetch: refetchGasPrice,
     isError: isErrorGasPriceFetch,
   } = useGasPrice();
-  console.log(gasPrice, gasEstimateData);
   useEffect(() => {
     if (chainId == undefined || gasPrice == undefined) return;
     if (!selectedToken) {
@@ -118,5 +118,3 @@ const useFormValidation = ({
 };
 
 export default useFormValidation;
-
-

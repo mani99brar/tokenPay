@@ -1,3 +1,4 @@
+// Desc: Reusable TransactionDetails component that displays transaction details
 import { useAccount } from "wagmi";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

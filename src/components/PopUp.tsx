@@ -1,3 +1,4 @@
+// Desc: This file contains the reusable PopUp component which is used to display a pop up on the screen
 import { useGlobalState } from "@/utils/StateContext";
 import { getThemeColors } from "@/utils/helpers/commonHelpers";
 interface PopUpProps {

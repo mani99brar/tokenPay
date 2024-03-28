@@ -1,13 +1,14 @@
+// Desc: TransactionStatus component that displays transaction status
 import { useEffect, useState } from "react";
 import { useWaitForTransactionReceipt, useAccount } from "wagmi";
-import PopUp from "./PopUp";
+import PopUp from "../PopUp";
 import { updateTrnxLocalStatus } from "@/utils/localStorage/readAndWrite";
-import ThemeWrapper from "./ThemeWrapper";
+import ThemeWrapper from "../layout/ThemeWrapper";
 import { useGlobalState } from "@/utils/StateContext";
 import TransactionDetails from "./TransactionDetails";
 import { getTokenData } from "@/utils/getTokenData/readContract";
 import { formatBalance, trimAddress } from "@/utils/helpers/commonHelpers";
-import Loader from "./Loader";
+import Loader from "../common/Loader";
 interface TransactionProps {
   transactionHash: `0x${string}` | undefined;
   trnxPrompt: string;
@@ -34,7 +35,6 @@ const TransactionStatus = ({
     } else if (isError) {
       setStatusMessage("Transaction failed.");
     } else if (data) {
-      console.log(data, "Data");
       if (transactionHash && data.status === "success") {
         updateActiveTransactionStatus();
         updateTrnxLocalStatus(transactionHash, false);

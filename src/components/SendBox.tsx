@@ -1,9 +1,10 @@
+// Desc: SendBox component for sending tokens and displaying stats
 import { useEffect, useState } from "react";
 import { useGlobalState } from "@/utils/StateContext";
 import { getThemeColors } from "@/utils/helpers/commonHelpers";
 import { useAccount } from "wagmi";
 import { readTrnxHistory } from "@/utils/localStorage/readAndWrite";
-import TokenForm from "./TokenForm";
+import TokenForm from "./tokens/TokenForm";
 import useEstimateTime from "@/utils/helpers/gasEstimate";
 import Stats from "./Stats";
 const SendBox = () => {
@@ -15,7 +16,11 @@ const SendBox = () => {
   useEffect(() => {
     const existingTransactions = readTrnxHistory(chainId);
     if (existingTransactions.length > 0) {
-      if (existingTransactions[0].isPending === true) {
+      if (
+        existingTransactions[0].isPending === true &&
+        existingTransactions[0].hash != null
+      ) {
+        console.log(existingTransactions);
         setActiveTransaction({ ...existingTransactions[0], isActive: true });
       }
     }
